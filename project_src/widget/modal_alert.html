@@ -1,0 +1,52 @@
+
+<div id="modal_alert_div" class="modal
+        {{ if option == 'warn' }} modal-warning
+        {{ else if option=='error'}} modal-danger
+        {{ else if option == 'success'}} modal-success
+        {{else}} modal-info {{/if}} modal_div_show">
+
+    <!-- @email: wormer@wormer.cn -->
+    <!-- @date: 2017-10-17 -->
+
+    <!-- widget modal  loading template -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: left;">
+                <button type="button" class="close alert_colose">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">
+                    <i class="fa
+                        {{ if option == 'warn' }}
+                            fa-warning
+                        {{ else if option=='error' }}
+                            fa-ban
+                        {{ else if option == 'success'}}
+                            fa-check
+                        {{else}}
+                            fa-info
+                        {{/if}}"></i>
+
+                    {{ if option == 'warn' }}
+                        警告
+                    {{ else if option=='error'}}
+                        错误
+                    {{ else if option == 'success'}}
+                        成功
+                    {{else}}
+                        提示
+                    {{/if}}
+                </h4>
+            </div>
+
+            <div class="modal-body" style="text-align: center;">
+                {{ body }}
+            </div>
+
+            <div class="modal-footer" style="text-align: right;">
+                <button type="button" class="btn btn-outline alert_colose">确定</button>
+            </div>
+
+        </div>
+    </div>
+</div>

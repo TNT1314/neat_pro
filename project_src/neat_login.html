@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Neat-login</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/font-awesome/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="plugins/font-awesome/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="plugins/adminlte/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
+    <!-- erp -->
+    <link rel="stylesheet" href="css/neat.css">
+</head>
+<body class="neat-login-page">
+    <div class="neat-overlay"></div>
+    <section class="neat-top-part">
+        <video controls="" autoplay="" loop="">
+            <source src="images/video.mp4" type="video/mp4">
+            <source src="images/video.ogg" type="video/ogg">
+        </video>
+    </section>
+    <div class="neat-body">
+        <div class="login-box neat-login-box">
+
+            <div class="neat-login-logo">
+                <a href="http://wormer.cn"><b>Wormer</b>ERP</a>
+            </div>
+
+            <div class="neat-register-box-body">
+
+                <p class="login-box-msg">请登录系统进行操作</p>
+
+                <form action="../../index2.html" method="post">
+
+                    <div class="form-group has-feedback">
+                        <input type="email" class="form-control" placeholder="账号">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control" placeholder="密码">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="checkbox icheck">
+                                <label>
+                                    <input type="checkbox">记住密码
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- /.col -->
+                        <div class="col-xs-4">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form><br/>
+
+
+                <a href="#">忘记密码?</a><br>
+            </div>
+
+        </div>
+    </div>
+
+<!-- jQuery 2.2.3 -->
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+</body>
+</html>

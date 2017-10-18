@@ -1,0 +1,39 @@
+{{ each menus menu}}
+    {{ if menu.childs.length >0 }}
+        <li class="treeview">
+            <label class="nav-click-lable" for="menu_{{ menu.id }}"></label>
+            <a id="menu_{{ menu.id }}" data-id="{{ menu.id }}" data-url="{{server}}{{menu.perm_url}}"
+               data-click='off' data-model='{{ menu.model_name }}' data-name='{{ menu.name }}'
+               class='click_menu' href="javascript:void(0);">
+                <i class="fa {{ menu.perm_icon }}"></i>
+                <span>{{ menu.name }}</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                {{ each menu.childs child c_index}}
+                <li>
+                    <label class="nav-click-lable" for="menu_{{ child.id }}"></label>
+                    <a id="menu_{{ child.id }}" data-id="{{ child.id }}"
+                       data-url="{{server}}{{ child.perm_url }}" data-click="on"
+                       data-model='{{ child.model_name }}' data-name='{{ child.name }}' class="click_menu"
+                       href="javascript:void(0);">
+                        <i class="fa {{ child.perm_icon }}"></i> {{ child.name }}
+                    </a>
+                </li>
+                {{ /each }}
+            </ul>
+        </li>
+    {{ else }}
+        <li {{ if menu.perm_icon=='fa-chrome' }}class="active" {{/if}}>
+            <label class="nav-click-lable" for="menu_{{ menu.id }}"></label>
+            <a id="menu_{{ menu.id }}" data-id="{{ menu.id }}" data-url="{{server}}{{menu.perm_url}}"
+               data-click="on" data-model='{{menu.model_name}}' data-name='{{menu.name}}' class="click_menu"
+               href="javascript:void(0);">
+                <i class="fa {{ menu.perm_icon }}"></i>
+                <span>{{ menu.name }}</span>
+            </a>
+        </li>
+    {{ /if }}
+{{ /each }}
