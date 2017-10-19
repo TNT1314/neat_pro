@@ -1,0 +1,51 @@
+<div id="modal_div" class="modal modal_div_show">
+    <!-- 模态窗口 -->
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+
+                <h4 class="modal-title">
+
+                    {{ if option == 'info' }}
+                        <div style="color:#00c0ef;">  <i class="fa fa-search"></i>查看</div>
+                    {{ else if option =='add' }}
+                        <div style="color:#00c0ef;">  <i class="fa fa-search"></i>添加</div>
+                    {{ else if option =='edit' }}
+                        <div style="color:#00c0ef;">  <i class="fa fa-search"></i>修改</div>
+                    {{ else }}
+                        <div style="color:#00c0ef;">  <i class="fa fa-search"></i>查看</div>
+                    {{ /if }}
+
+                </h4>
+            </div>
+
+            <div class="modal-body modal_div_dialog">
+                {{ if body }}
+                    <p>内容页面</p>
+                {{ else }}
+                    <p>请设置页面内容</p>
+                {{ /if }}
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" id="modal_cancel" class="btn btn-default pull-left" data-dismiss="modal">
+                    取消
+                </button>
+
+                <button type="button" id="modal_submit" class="btn btn-primary">{{ sure_show }}</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- /.modal-dialog -->
+</div>

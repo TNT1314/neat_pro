@@ -49,35 +49,37 @@ var OpenModal = {
     open:function(listener){
         "use strict"
 
-        $('#modal_div').addClass("modal_div_show");
-        $('#modal_div').find(".close").on('click',function(){OpenModal.close();});
-        $('#modal_div').find("#modal_cancel").on('click',function(){OpenModal.close();});
-        
-        var modal_title = null;
-        if(listener.option === "info"){
-            modal_title = '<div style="color:#00c0ef;"><i class="fa fa-search"></i>查看信息</div>';
-        }else if(listener.option === "add"){
-            modal_title = '<div style="color:#00a65a;"><i class="fa fa-plus"></i>添加信息</div>';
-        }else if(listener.option === 'edit'){
-            modal_title = '<div style="color:#3c8dbc;"><i class="fa fa-edit"></i>修改信息</div>';
-        }else{
-            modal_title = listener.title;
-        }
-        $('#modal_div').find(".modal-title").empty().html(modal_title);
-        $('#modal_div').find(".modal-body").empty().html(listener.body);
-        $("#modal_submit").html(listener.sure_show).on('click',
-            function(){ if(typeof listener.sure === "function"){ listener.sure();}}
-        );
+        var show = function(htmltext){
+
+            if( $('#modal_div').length == 0){
+
+                var html = template.render(htmltext, listener);
+
+                $('body').append(html);
+
+                $('#modal_div').find(".close").on('click', function(){ OpenModal.close(); });
+
+                $('#modal_div').find("#modal_cancel").on('click',function(){ OpenModal.close();});
+
+                $('#modal_div').find("#modal_submit").on('click',function(){
+
+                    if(typeof listener.sure === "function"){
+                        listener.sure();
+                        OpenModal.close();
+                    }
+                });
+            }
+
+        };
+
+        AjaxRequest.ajax_widget('widget/modal.html', show);
     },
 
     /** 收起处理单据明细页面 **/
     close:function(){
         "use strict"
-        
-        $('#modal_div').find(".modal-title").empty().html("模态窗口");
-        $('#modal_div').find(".modal-body").empty().html("等待添加");
-        $("#modal_div").removeClass("modal_div_show");
-        $("#modal_submit").off("click");
+
+        $("#modal_div").remove();
     },
     
     /** 处理选择类 确认框 **/
