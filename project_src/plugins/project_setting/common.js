@@ -475,6 +475,50 @@ var NavTable = {
         return like_list;
     },
 
+    /** 变更皮肤方法 **/
+    change_threme:function(){
+
+        $(".full-opacity-hover").on("click",function(e){
+            var theme = $(this).attr("data-skin");
+            $("body").removeClass().addClass(theme + " sidebar-mini");
+        });
+
+    },
+
+    /** 初始化用户 **/
+    init_user:function(data){
+        "use strict"
+
+        if(!ValidData(data) || Settings.debug){
+            data = {
+                username: "Wormer",
+                realname: "wormer.cn",
+                avatar: "",
+                company: "建设者家园网络科技有限公司",
+            };
+        }
+
+        NavTable.change_threme();
+
+        // 加载左侧用户信息
+        AjaxRequest.ajax_widget(
+            "widget/user_left.html",
+            function(htmltext){
+                var html_str = template.render(htmltext, data);
+                $(html_str).insertBefore($("#menu_search"));
+            }
+        );
+
+        // 加载顶部用户信息
+        AjaxRequest.ajax_widget(
+            "widget/user_top.html",
+            function(htmltext){
+                var html_str = template.render(htmltext, data);
+                $(html_str).insertBefore($("#menus_setting"));
+            }
+        );
+    },
+
     /** 初始化菜单 **/
     menu_init:function(data){
         "use strict"

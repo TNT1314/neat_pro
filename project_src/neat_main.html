@@ -36,7 +36,7 @@
     <![endif]-->
 </head>
 
-<body class="hold-transition skin-purple sidebar-mini">
+<body class="hold-transition skin-black-light sidebar-mini">
 
 <div id="modal_content_div" class="modal">
     <div class="modal-dialog">
@@ -112,48 +112,11 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
 
-                    <!-- User Account: style can be found in dropdown.less -->
-                    <li id="left_profile" class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="images/user2-160x160.jpg" class="user-image" alt="{{username}}">
-                            <span class="hidden-xs">&nbsp;</span>
+                    <!-- 设置按钮 -->
+                    <li id="menus_setting">
+                        <a href="#" data-toggle="control-sidebar">
+                            <i class="fa fa-gears"></i>
                         </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header" style="height:125px;text-align: left;padding: 0px">
-
-                                <div class="pull-left image" style="clear:both;">
-                                    <img src=" images/user2-160x160.jpg" class="img-circle" alt="用户照片"
-                                         style="width:50px;height:50px;margin-left: 20px;margin-top:20px">
-                                </div>
-
-                                <div class="pull-left info" style="margin-left: 10px;margin-top: 25px">
-                                    <span style="color:white">wormer</span><br/>
-                                    <span style="color:white">wormer</span>
-                                </div>
-
-                                <br/>
-
-                                <div class="bottom info"
-                                     style="clear:both;color:white;margin-left: 20px;margin-top: 60px">
-                                    公司:&nbsp;&nbsp;&nbsp;XXXX公司
-                                </div>
-
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="main_person_profile" style="padding: 5px">
-                                    <a href="#" style="font-size:12px;color:#333333 ">个人信息</a>
-                                </div>
-                                <div class="main_login_out" style="padding: 5px">
-                                    <a href="#" style="font-size:12px;color:#333333">退出</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                     </li>
                 </ul>
             </div>
@@ -164,22 +127,10 @@
     <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-            <!-- Sidebar user panel -->
-            <div id="right_profile" class="user-panel">
-                <div class="pull-left image">
-                    <img src="images/user2-160x160.jpg" class="img-circle" alt="用户头像">
-                </div>
-                <div class="pull-left info">
-                    <p>wormer</p>
-                    <a href="#">
-                        <i class="fa fa-circle text-success"></i> 在线
-                    </a>
-                </div>
-            </div>
+        <section id="menu_left" class="sidebar">
 
             <!-- search form -->
-            <div class="sidebar-form">
+            <div id="menu_search" class="sidebar-form">
                 <div class="input-group" style="display:grid;">
                     <input type="text" id="menu-search" class="form-control" placeholder="菜单检索...">
                 </div>
@@ -208,185 +159,176 @@
     </aside>
 
     <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
+    <aside class="control-sidebar set-sidebar-dark">
         <!-- Tab panes -->
         <div class="tab-content">
             <div id="control-sidebar-theme-tab" class="tab-pane active">
-                <div>
+                <div class="set-sidebar-hear">
                     <h4 class="control-sidebar-heading">请选择皮肤</h4>
                     <ul class="list-unstyled clearfix">
-                        <li style="float:left; width: 33.33333%; padding: 5px;">
-                            <a href="javascript:void(0);" data-skin="skin-blue"
-                               style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                               class="clearfix full-opacity-hover">
+                        <li>
+                            <a href="javascript:void(0);" data-skin="skin-blue" class="clearfix full-opacity-hover">
                                 <div>
-                                    <span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9;"></span>
-                                    <span class="bg-light-blue" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                                    <span class="set-span-left-top set-span-left-top-blue"></span>
+                                    <span class="bg-light-blue set-span-top"></span>
                                 </div>
                                 <div>
-                                    <span style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span>
-                                    <span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
+                                    <span class="set-span-left set-span-left-blue"></span>
+                                    <span class="set-span-bottom"></span>
                                 </div>
                             </a>
                             <p class="text-center no-margin">蓝色</p>
                         </li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;">
-                            <a href="javascript:void(0);" data-skin="skin-black"
-                               style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                               class="clearfix full-opacity-hover">
+                        <li>
+                            <a href="javascript:void(0);" data-skin="skin-black" class="clearfix full-opacity-hover">
                                 <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix">
-                                    <span style="display:block; width: 20%; float: left; height: 7px; background: #fefefe;"></span>
-                                    <span style="display:block; width: 80%; float: left; height: 7px; background: #fefefe;"></span>
+                                    <span class="set-span-left-top set-span-top-black"></span>
+                                    <span class="set-span-top set-span-top-black"></span>
                                 </div>
                                 <div>
-                                    <span style="display:block; width: 20%; float: left; height: 20px; background: #222;"></span>
-                                    <span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
+                                    <span class="set-span-left set-span-left-black"></span>
+                                    <span class="set-span-bottom"></span>
                                 </div>
                             </a>
-                            <p class="text-center no-margin">黑色</p>
+                            <p class="text-center no-margin">白色</p>
                         </li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;">
-                            <a href="javascript:void(0);" data-skin="skin-purple"
-                               style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                               class="clearfix full-opacity-hover">
+                        <li>
+                            <a href="javascript:void(0);" data-skin="skin-purple" class="clearfix full-opacity-hover">
                                 <div>
-                                    <span style="display:block; width: 20%; float: left; height: 7px;" class="bg-purple-active"></span>
-                                    <span class="bg-purple" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                                    <span class="set-span-left-top bg-purple-active"></span>
+                                    <span class="set-span-top bg-purple"></span>
                                 </div>
                                 <div>
-                                    <span style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span>
-                                    <span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
+                                    <span class="set-span-left set-span-left-blue"></span>
+                                    <span class="set-span-bottom"></span>
                                 </div>
                             </a>
                             <p class="text-center no-margin">紫色</p>
                         </li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;">
-                            <a href="javascript:void(0);" data-skin="skin-green"
-                               style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                               class="clearfix full-opacity-hover">
+                        <li >
+                            <a href="javascript:void(0);" data-skin="skin-green" class="clearfix full-opacity-hover">
                                 <div>
-                                    <span style="display:block; width: 20%; float: left; height: 7px;" class="bg-green-active"></span>
-                                    <span class="bg-green" style="display:block; width: 80%; float: left; height: 7px;"></span>
+                                    <span class="bg-green-active set-span-left-top"></span>
+                                    <span class="set-span-top bg-green"></span>
                                 </div>
                                 <div>
-                                    <span style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span>
-                                    <span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
+                                    <span class="set-span-left set-span-left-blue"></span>
+                                    <span class="set-span-bottom"></span>
                                 </div>
                             </a>
-                            <p class="text-center no-margin">Green</p>
+                            <p class="text-center no-margin">绿色</p>
                         </li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;"><a href="javascript:void(0);"
-                                                                                   data-skin="skin-red"
-                                                                                   style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                                                                                   class="clearfix full-opacity-hover">
-                            <div><span style="display:block; width: 20%; float: left; height: 7px;"
-                                       class="bg-red-active"></span><span class="bg-red"
-                                                                          style="display:block; width: 80%; float: left; height: 7px;"></span>
+                        <li >
+                            <a href="javascript:void(0);" data-skin="skin-red" class="clearfix full-opacity-hover">
+                                <div>
+                                    <span class="set-span-left-top bg-red-active"></span>
+                                    <span class="set-span-top bg-red"></span>
+                                </div>
+                                <div>
+                                    <span class="set-span-left set-span-left-blue"></span>
+                                    <span class="set-span-bottom"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">红色</p></li>
+                        <li >
+                            <a href="javascript:void(0);"
+                                   data-skin="skin-yellow"
+                                   class="clearfix full-opacity-hover">
+                                <div>
+                                    <span class="set-span-left-top bg-yellow-active"></span>
+                                    <span class="set-span-top bg-yellow"></span>
+                                </div>
+                                <div>
+                                    <span class="set-span-left set-span-left-blue"></span>
+                                    <span class="set-span-bottom"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">黄色</p></li>
+                        <li>
+                            <a href="javascript:void(0);"
+                                   data-skin="skin-blue-light"
+                                   class="clearfix full-opacity-hover">
+                                <div>
+                                    <span class="set-span-left-top set-span-left-blue-light"></span>
+                                    <span class="set-span-top bg-light-blue"></span>
+                                </div>
+                                <div>
+                                    <span class="set-span-left set-span-left-light"></span>
+                                    <span class="set-span-bottom"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">蓝色高亮</p></li>
+                        <li >
+                            <a href="javascript:void(0);"
+                                   data-skin="skin-black-light"
+                                   class="clearfix full-opacity-hover">
+                                <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix">
+                                    <span class="set-span-left-top set-span-top-black"></span>
+                                    <span class="set-span-top set-span-top-black"></span>
+                                </div>
+                                <div>
+                                    <span class="set-span-left set-span-left-light"></span>
+                                    <span class="set-span-bottom"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">白色高亮</p></li>
+                        <li >
+                            <a href="javascript:void(0);"
+                                       data-skin="skin-purple-light"
+                                       class="clearfix full-opacity-hover">
+                            <div>
+                                <span class="set-span-left-top bg-purple-active"></span>
+                                <span class="set-span-top bg-purple"></span>
                             </div>
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
-                            </div>
-                        </a>
-                            <p class="text-center no-margin">Red</p></li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;"><a href="javascript:void(0);"
-                                                                                   data-skin="skin-yellow"
-                                                                                   style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                                                                                   class="clearfix full-opacity-hover">
-                            <div><span style="display:block; width: 20%; float: left; height: 7px;"
-                                       class="bg-yellow-active"></span><span class="bg-yellow"
-                                                                             style="display:block; width: 80%; float: left; height: 7px;"></span>
-                            </div>
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
-                            </div>
-                        </a>
-                            <p class="text-center no-margin">Yellow</p></li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;"><a href="javascript:void(0);"
-                                                                                   data-skin="skin-blue-light"
-                                                                                   style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                                                                                   class="clearfix full-opacity-hover">
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 7px; background: #367fa9;"></span><span
-                                    class="bg-light-blue"
-                                    style="display:block; width: 80%; float: left; height: 7px;"></span></div>
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
-                            </div>
-                        </a>
-                            <p class="text-center no-margin" style="font-size: 12px">Blue Light</p></li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;"><a href="javascript:void(0);"
-                                                                                   data-skin="skin-black-light"
-                                                                                   style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                                                                                   class="clearfix full-opacity-hover">
-                            <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span
-                                    style="display:block; width: 20%; float: left; height: 7px; background: #fefefe;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 7px; background: #fefefe;"></span>
-                            </div>
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
-                            </div>
-                        </a>
-                            <p class="text-center no-margin" style="font-size: 12px">Black Light</p></li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;"><a href="javascript:void(0);"
-                                                                                   data-skin="skin-purple-light"
-                                                                                   style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                                                                                   class="clearfix full-opacity-hover">
-                            <div><span style="display:block; width: 20%; float: left; height: 7px;"
-                                       class="bg-purple-active"></span><span class="bg-purple"
-                                                                             style="display:block; width: 80%; float: left; height: 7px;"></span>
-                            </div>
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
+                            <div>
+                                <span class="set-span-left set-span-left-light"></span>
+                                <span class="set-span-bottom"></span>
                             </div>
                         </a>
-                            <p class="text-center no-margin" style="font-size: 12px">Purple Light</p></li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;"><a href="javascript:void(0);"
-                                                                                   data-skin="skin-green-light"
-                                                                                   style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                                                                                   class="clearfix full-opacity-hover">
-                            <div><span style="display:block; width: 20%; float: left; height: 7px;"
-                                       class="bg-green-active"></span><span class="bg-green"
-                                                                            style="display:block; width: 80%; float: left; height: 7px;"></span>
-                            </div>
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
-                            </div>
-                        </a>
-                            <p class="text-center no-margin" style="font-size: 12px">Green Light</p></li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;"><a href="javascript:void(0);"
-                                                                                   data-skin="skin-red-light"
-                                                                                   style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                                                                                   class="clearfix full-opacity-hover">
-                            <div><span style="display:block; width: 20%; float: left; height: 7px;"
-                                       class="bg-red-active"></span><span class="bg-red"
-                                                                          style="display:block; width: 80%; float: left; height: 7px;"></span>
-                            </div>
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
-                            </div>
-                        </a>
-                            <p class="text-center no-margin" style="font-size: 12px">Red Light</p></li>
-                        <li style="float:left; width: 33.33333%; padding: 5px;"><a href="javascript:void(0);"
-                                                                                   data-skin="skin-yellow-light"
-                                                                                   style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
-                                                                                   class="clearfix full-opacity-hover">
-                            <div><span style="display:block; width: 20%; float: left; height: 7px;"
-                                       class="bg-yellow-active"></span><span class="bg-yellow"
-                                                                             style="display:block; width: 80%; float: left; height: 7px;"></span>
-                            </div>
-                            <div><span
-                                    style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span
-                                    style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span>
-                            </div>
-                        </a>
-                            <p class="text-center no-margin" style="font-size: 12px;">Yellow Light</p></li>
+                            <p class="text-center no-margin">紫色高亮</p></li>
+                        <li>
+                            <a href="javascript:void(0);"
+                                   data-skin="skin-green-light"
+                                   class="clearfix full-opacity-hover">
+                                <div>
+                                    <span class="set-span-left-top bg-green-active"></span>
+                                    <span class="set-span-top bg-green"></span>
+                                </div>
+                                <div>
+                                    <span class="set-span-left set-span-left-light"></span>
+                                    <span class="set-span-bottom"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">绿色高亮</p></li>
+                        <li >
+                            <a href="javascript:void(0);"
+                                   data-skin="skin-red-light"
+                                   class="clearfix full-opacity-hover">
+                                <div>
+                                    <span class="set-span-left-top bg-red-active"></span>
+                                    <span class="set-span-top bg-red"></span>
+                                </div>
+                                <div>
+                                    <span class="set-span-left set-span-left-light"></span>
+                                    <span class="set-span-bottom"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">红色高亮</p></li>
+                        <li>
+                            <a href="javascript:void(0);"
+                                   data-skin="skin-yellow-light"
+                                   class="clearfix full-opacity-hover">
+                                <div>
+                                    <span class="set-span-left-top bg-yellow-active"></span>
+                                    <span class="set-span-top bg-yellow" ></span>
+                                </div>
+                                <div>
+                                    <span class="set-span-left set-span-left-light"></span>
+                                    <span class="set-span-bottom"></span>
+                                </div>
+                            </a>
+                            <p class="text-center no-margin">黄色高亮</p>
+                        </li>
                     </ul>
                 </div>
             </div>
