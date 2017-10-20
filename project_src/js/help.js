@@ -7,6 +7,7 @@ $(function() {
         /** 初始化 **/
         init_model();
 
+        init_paging();
 
         init_grid();
     } catch (e) {
@@ -34,14 +35,59 @@ $(function() {
     }
 
     /*
+     * 初始化分页表格
+     */
+
+
+    function init_paging(){
+        var url = "images/testdata/beverages.txt";
+
+        // prepare the data
+        var source =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'name', type: 'string' },
+                    { name: 'type', type: 'string' },
+                    { name: 'calories', type: 'int' },
+                    { name: 'totalfat', type: 'string' },
+                    { name: 'protein', type: 'string' }
+                ],
+                id: 'id',
+                url: url
+            };
+
+        var dataAdapter = new $.jqx.dataAdapter(source);
+
+        $("#paging").jqxGrid(
+            {
+                width: "100%",
+                height: 500,
+                source: dataAdapter,
+                theme: "",
+                selectionmode: 'multiplerowsextended',
+                sortable: true,
+                pageable: true,
+                autoheight: true,
+                columnsresize: true,
+                columns: [
+                    { text: 'Name', datafield: 'name', width: 250 },
+                    { text: 'Beverage Type', datafield: 'type', width: 250 },
+                    { text: 'Calories', datafield: 'calories', width: 180 },
+                    { text: 'Total Fat', datafield: 'totalfat', width: 120 },
+                    { text: 'Protein', datafield: 'protein', minwidth: 120 }
+                ]
+            }
+        );
+    }
+
+
+    /*
      * 初始化表格
      */
     function init_grid(){
 
-        Tools.error("function", typeof  Tools.generatedata());
         var data = Tools.generatedata(100, false);
-
-        Tools.group("data", data);
 
         var theme = "";
 
@@ -50,7 +96,6 @@ $(function() {
                 localdata: data,
                 datatype: "array",
                 updaterow: function (rowid, rowdata, commit) {
-                    // synchronize with the server - send update command
                     commit(true);
                 },
                 datafields:
@@ -80,52 +125,58 @@ $(function() {
                 selectionmode: 'singlecell',
                 columns: [
                     {
-                        text: 'First Name', columntype: 'textbox', datafield: 'firstname', width: 90,
+                        text: '姓', columntype: 'textbox', datafield: 'firstname', width: 90,
                         aggregatesrenderer: function (aggregates, column, element) {
-                            Tools.group("params", aggregates, column, element);
+                            Tools.noshow(aggregates, column, element);
                             var renderstring = "<div class='jqx-widget-content jqx-widget-content-" + theme + "' style='float: left; width: 100%; height: 100%; '/>";
                             return renderstring;
                         }
                     },
                     {
-                        text: 'Last Name', datafield: 'lastname', columntype: 'textbox', width: 90,
+                        text: '名', datafield: 'lastname', columntype: 'textbox', width: 90,
                         aggregatesrenderer: function (aggregates, column, element) {
-                            Tools.group("params", aggregates, column, element);
+                            Tools.noshow( aggregates, column, element);
                             var renderstring = "<div class='jqx-widget-content jqx-widget-content-" + theme + "' style='float: left; width: 100%; height: 100%; '/>";
                             return renderstring;
                         }
                     },
                     {
-                        text: 'Product', datafield: 'productname', width: 170,
+                        text: '产品', datafield: 'productname', width: 170,
                         aggregatesrenderer: function (aggregates, column, element) {
-                            Tools.group("params", aggregates, column, element);
+                            Tools.noshow( aggregates, column, element);
                             var renderstring = "<div class='jqx-widget-content jqx-widget-content-" + theme + "' style='float: left; width: 100%; height: 100%; '/>";
                             return renderstring;
                         }
                     },
-                    { text: 'Quantity', datafield: 'quantity', width: 85, cellsalign: 'right', cellsformat: 'n2', aggregates: ['min', 'max'],
+                    {
+                        text: '数量',
+                        datafield: 'quantity',
+                        width: 85,
+                        cellsalign: 'right',
+                        cellsformat: 'n2',
+                        aggregates: ['min', 'max'],
                         aggregatesrenderer: function (aggregates, column, element) {
-                            Tools.group("params", aggregates, column, element);
+                            Tools.noshow(aggregates, column, element);
                             var renderstring = "<div class='jqx-widget-content jqx-widget-content-" + theme + "' style='float: left; width: 100%; height: 100%; '>";
                             $.each(aggregates, function (key, value) {
-                                var name = key == 'min' ? 'Min' : 'Max';
-                                var color = key == 'max' ? 'green' : 'red';
+                                var name = key === 'min' ? 'Min' : 'Max';
+                                var color = key === 'max' ? 'green' : 'red';
                                 renderstring += '<div style="color: ' + color + '; position: relative; margin: 6px; text-align: right; overflow: hidden;">' + name + ': ' + value + '</div>';
                             });
                             renderstring += "</div>";
                             return renderstring;
                         }
                     },
-                    { text: 'Price', datafield: 'price', cellsalign: 'right', cellsformat: 'c2', aggregates: ['sum', 'avg'],
+                    { text: '价格', datafield: 'price', cellsalign: 'right', cellsformat: 'c2', aggregates: ['sum', 'avg'],
                         aggregatesrenderer: function (aggregates, column, element, summaryData) {
                             var renderstring = "<div class='jqx-widget-content jqx-widget-content-" + theme + "' style='float: left; width: 100%; height: 100%;'>";
                             $.each(aggregates, function (key, value) {
-                                var name = key == 'sum' ? 'Sum' : 'Avg';
+                                var name = key === 'sum' ? 'Sum' : 'Avg';
                                 var color = 'green';
-                                if (key == 'sum' && summaryData.sum < 650) {
+                                if (key === 'sum' && summaryData.sum < 650) {
                                     color = 'red';
                                 }
-                                if (key == 'avg' && summaryData.avg < 4) {
+                                if (key === 'avg' && summaryData.avg < 4) {
                                     color = 'red';
                                 }
                                 renderstring += '<div style="color: ' + color + '; position: relative; margin: 6px; text-align: right; overflow: hidden;">' + name + ': ' + value + '</div>';
@@ -137,9 +188,5 @@ $(function() {
                 ]
             }
         );
-
-        Tools.info("begin to  resize");
-        $('#jqxgrid').jqxGrid('autoresizecolumns');
-        Tools.info("over to  resize");
     }
-});
+})();

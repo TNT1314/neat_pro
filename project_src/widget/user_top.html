@@ -5,9 +5,9 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
         {{ if avatar }}
-            <img src="{{ avatar }}" class="user-image" alt="{{username}}">
-        {{ else}}
-            <img src="images/user2-160x160.jpg" class="user-image" alt="{{username}}">
+            <img src="{{ avatar }}" class="user-image" alt="{{ username }}">
+        {{ else }}
+            <img src="images/user2-160x160.jpg" class="user-image" alt="{{ username }}">
         {{ /if }}
 
         <span class="hidden-xs">&nbsp;</span>
@@ -20,11 +20,13 @@
         <li class="user-header" style=" height:125px;text-align: left;padding: 0px;">
 
             <div class="pull-left image" style="clear:both;">
+
                 {{ if avatar }}
-                    <img src="{{ avatar }}" class="img-circle" alt="{{username}}" style="width:50px;height:50px;margin-left: 20px;margin-top:20px">
+                    <img src="{{ avatar }}" class="img-circle" alt="{{ username }}" style="width:50px;height:50px;margin-left: 20px;margin-top:20px">
                 {{ else }}
-                    <img src="images/user2-160x160.jpg" class="img-circle" alt="{{username}}" style="width:50px;height:50px;margin-left: 20px;margin-top:20px">
+                    <img src="images/user2-160x160.jpg" class="img-circle" alt="{{ username }}" style="width:50px;height:50px;margin-left: 20px;margin-top:20px">
                 {{ /if }}
+
             </div>
 
             <div class="pull-left info" style="margin-left: 10px;margin-top: 25px">
@@ -53,6 +55,7 @@
                 <a href="#" style="font-size:12px;color:#333333 ">个人信息</a>
 
             </div>
+
             <div class="main_login_out" style="padding: 5px">
 
                 <a href="#" style="font-size:12px;color:#333333">退出</a>

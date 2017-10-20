@@ -4,24 +4,34 @@
 var CharTools = {
     /** 字符串转List方法 **/
     str2array:function(chars){
+        "use strict";
+
         return eval(chars);
     },
     /** 字符串转Json方法 **/
     str2json:function(chars){
+        "use strict";
+
         return JSON.parse(chars);
     },
     /** 字符串转Json方法 **/
     json2str:function(josno){
+        "use strict";
+
         return JSON.stringify(josno);
     },
     /** 格式化INT类型 **/
     parse_int:function(ints){
+        "use strict";
+
         return parseInt(ints);
     },
     isString:function (str){
-        var valid_result = false
-        if(str.length!=0){    
-            reg=/^[a-zA-Z0-9_]+$/;     
+        "use strict";
+
+        var valid_result = false;
+        if(str.length!==0){
+            var reg = /^[a-zA-Z0-9_]+$/;
             if(reg.test(str)){valid_result = true;}
         }
         return valid_result;
@@ -33,6 +43,8 @@ var FormTools = {
     
     /** 表单类工具 **/
     group_checked:function(form_id){
+        "use strict";
+
         $('#'+form_id).find($(":checkbox")).on('click', function(){
             if($(this).is(':checked')){ 
                 $(this).siblings().attr('checked', false).attr('checked',true);
@@ -47,11 +59,11 @@ var OpenModal = {
     
     /** 弹出层，处理单据明细页面**/
     open:function(listener){
-        "use strict"
+        "use strict";
 
         var show = function(htmltext){
 
-            if( $('#modal_div').length == 0){
+            if( $('#modal_div').length === 0){
 
                 var html = template.render(htmltext, listener);
 
@@ -77,14 +89,14 @@ var OpenModal = {
 
     /** 收起处理单据明细页面 **/
     close:function(){
-        "use strict"
+        "use strict";
 
         $("#modal_div").remove();
     },
     
     /** 处理选择类 确认框 **/
     open_confirm:function(listener){
-        "use strict"
+        "use strict";
 
         $('#modal_content_div').addClass("modal_content_div_show");
         $('#modal_content_div').find(".close").on('click',function(){OpenModal.close_confirm();});
@@ -111,7 +123,7 @@ var OpenModal = {
     
     /** 关闭选择类 确认框 **/
     close_confirm:function(){
-        "use strict"
+        "use strict";
         
         $('#modal_content_div').find(".modal-title").empty().html("弹出窗口");
         $('#modal_content_div').find(".modal-body").empty().html("等待添加");
@@ -121,11 +133,11 @@ var OpenModal = {
     
     /** 处理所有的确认框.类似alert **/
     open_alert:function(listener){
-        "use strict"
+        "use strict";
 
         var show = function(htmltext){
 
-            if($('#modal_alert_div').length == 0 ){
+            if($('#modal_alert_div').length === 0 ){
 
                 var html = template.render(htmltext, listener);
 
@@ -157,7 +169,7 @@ var OpenModal = {
         "use strict"
         
         if(!ValidData(content)){
-            content = "加载文件中，请稍后......"
+            content = "加载文件中，请稍后......";
         }
 
         var show = function(htmltext){
@@ -187,6 +199,8 @@ var OpenModal = {
  *
  */
 var AutoInput = function (option){
+    "use strict"
+
     var element_id = option.id;
     var element = $("#"+element_id);
     var query = option.query;
@@ -241,7 +255,7 @@ var AjaxRequest = {
         
         var result = {had:false, html_str: null}
         for(var _cahced in AjaxRequest.cached_tp){
-            if(AjaxRequest.cached_tp[_cahced].url == url){
+            if(AjaxRequest.cached_tp[_cahced].url === url){
                 result.had = true;
                 result.html_str = AjaxRequest.cached_tp[_cahced].html_str;
                 break;
@@ -256,10 +270,10 @@ var AjaxRequest = {
         
         var v_had = false;
         for(var v_url in this.cached_js){
-            if(v_url == url){v_had = true;break;}
+            if(v_url === url){v_had = true;break;}
         }
-        if(!v_had) this.cached_js.push(url)
-        return v_had
+        if(!v_had) { this.cached_js.push(url); }
+        return v_had;
     },
     
     /** ajax加载js插件方法 **/
@@ -268,13 +282,13 @@ var AjaxRequest = {
         
         if(AjaxRequest.cache_js_has(url)){
             Tools.info("Loading Cache Js File Finished.");
-            if(typeof method=='function') method();
+            if(typeof method==='function'){method();}
         }else{
             options = $.extend( options || {}, {dataType: "script",url: url,cache: true}); 
             return $.ajax(options).done(
                 function(){
                     Tools.info("Loading Ajax Js File Finished.");
-                    if(typeof method=='function') method();
+                    if(typeof method==='function'){method();}
                 });
             
         }
@@ -321,7 +335,7 @@ var AjaxRequest = {
 
     /** 网络请求控件方法: **/
     ajax_widget:function(url, listener){
-        "use strict"
+        "use strict";
 
         var tp_cached = AjaxRequest.cache_tp_has(url);
 
@@ -343,10 +357,16 @@ var AjaxRequest = {
                     AjaxRequest.cached_tp.push({url: url, html_str: responseTxt});
 
                 }else{
-                    Tools.error("Ajax Loading File Error.", url, responseTxt);
+                    Tools.error("Ajax Loading File Error.", url, responseTxt, xhr);
                 }
             };
-            $("<div></div>").load(url, load_file_listenser);
+            try{
+                $("<div></div>").load(url, load_file_listenser);
+            }catch (e){
+                Tools.error("Error", e);
+                console.trace();
+            }
+
         }
     },
     
@@ -358,19 +378,19 @@ var AjaxRequest = {
      * listener: 监听方法包括 success，error
      */
     ajax_jsonp: function (type, url, data, listener, timeout, content) {
-        "use strict"
+        "use strict";
         
         // 默认超时时间
-        timeout = timeout===undefined || timeout==null ? 3*60*1000 : timeout;
+        timeout = timeout===undefined || timeout===null ? 3*60*1000 : timeout;
         
         // 默认正在加载内容
-        content = content===undefined || content==null ? '正在努力加载中，请稍候...' : content;
+        content = content===undefined || content===null ? '正在努力加载中，请稍候...' : content;
         
         // 如果正在加载需要加入文字，则加入文字显示
         OpenModal.open_loading(content);
         
         // 定义数据格式化形式
-        if(Settings.ajax_format == 'jsonp'){
+        if(Settings.ajax_format === 'jsonp'){
             data.format = Settings.ajax_format;
         }
         
@@ -417,17 +437,19 @@ var NavOpenAction = {
     action:{},
     //存储action
     set_cached_action:function (data) {
-        "use strict"
+        "use strict";
+
         var s_data = data;
-        if(s_data != null){
+        if(s_data !== null){
             NavOpenAction.action = null;
             NavOpenAction.action = s_data;
         }
     },
     //判断action类型，执行对应操作
     get_cached_action:function(){
-        "use strict"
-        if (NavOpenAction.action != null){
+        "use strict";
+
+        if (NavOpenAction.action !== null){
             var action = NavOpenAction.action;
             NavOpenAction.action = null;
             return  action;
@@ -437,9 +459,10 @@ var NavOpenAction = {
     },
     /** do_some_action **/
     do_some_action:function () {
-        "use strict"
+        "use strict";
+
         //页面跳转
-        if (NavOpenAction.action != null){
+        if (NavOpenAction.action !== null){
             var action = NavOpenAction.action;
             $("#"+action.model+"_"+action.action).click();
         }
@@ -456,7 +479,7 @@ var NavTable = {
     
     /** 从接口数据抽取数据 **/
     set_cached_menus: function(menus_data){
-        "use strict"
+        "use strict";
         
         for(var i=0;i<menus_data.length;i++){
             var menu_data = menus_data[i];
@@ -467,7 +490,7 @@ var NavTable = {
     
     /** 从缓存中进行检索 **/
     search_cached_menu:function(condition){
-        "use strict"
+        "use strict";
         
         var like_list = [];
         for(var i = 0 ; i < NavTable.cache_menus.length; i++){
@@ -479,6 +502,7 @@ var NavTable = {
 
     /** 变更皮肤方法 **/
     change_threme:function(){
+        "use strict";
 
         $(".full-opacity-hover").on("click",function(e){
             var theme = $(this).attr("data-skin");
@@ -489,27 +513,26 @@ var NavTable = {
 
     /** 初始化用户 **/
     init_user:function(data){
-        "use strict"
+        "use strict";
 
         if(!ValidData(data) || Settings.debug){
             data = {
                 username: "Wormer",
                 realname: "wormer.cn",
-                avatar: "",
                 company: "建设者家园网络科技有限公司",
             };
         }
 
         NavTable.change_threme();
 
-        // 加载左侧用户信息
-        AjaxRequest.ajax_widget(
-            "widget/user_left.html",
-            function(htmltext){
-                var html_str = template.render(htmltext, data);
-                $(html_str).insertBefore($("#menu_search"));
-            }
-        );
+        // // 加载左侧用户信息
+        // AjaxRequest.ajax_widget(
+        //     "widget/user_left.html",
+        //     function(htmltext){
+        //         var html_str = template.render(htmltext, data);
+        //         $(html_str).insertBefore($("#menu_search"));
+        //     }
+        // );
 
         // 加载顶部用户信息
         AjaxRequest.ajax_widget(
@@ -708,7 +731,7 @@ var NavTable = {
 
         for(var i=0;i<url_list.length;i++){
 
-            if(i+1 == url_list.length){
+            if((i+1) == url_list.length){
 
                 AjaxRequest.ajax_file_script('js/' + url_list[i], listen);
 
@@ -739,13 +762,15 @@ var TableTools = {
     
     /** table list 获取请求地址 **/
     get_url:function(url){
-        "use strict"
+        "use strict";
         
         return Settings.ajax_format=='jsonp' ? Settings.server + url + '?format=jsonp' : Settings.server + url;
     },
     
     /** table list 单选监听 **/
     selected_listener:function(table, table_name){
+        "use strict";
+
         $('#'+table_name+' tbody').on('click', 'tr', function () {
             if($(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
@@ -755,13 +780,14 @@ var TableTools = {
             }
         });
     }
-}
+};
 
 /** 业务请求方法类 **/
 var PageRequest = {
     /** 安全退出接口 **/
     login_out:function(listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/account/logout';
         var s_data = {};
@@ -772,7 +798,8 @@ var PageRequest = {
     },
     /** 获取菜单权限接口 **/
     get_model_permision:function(r_data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/account/model/permission/get';
         var s_data = r_data;
@@ -783,7 +810,8 @@ var PageRequest = {
     },
     /** 请求菜单接口 **/
     get_menus:function(listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/account/permission/list/get';
         var s_data = {};
@@ -794,7 +822,8 @@ var PageRequest = {
     },
     /** 获取账号信息 **/
     get_account_info:function(listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/account/info/get';
         var s_data = {};
@@ -805,7 +834,8 @@ var PageRequest = {
     },
     /** 查看 **/
     get_dashbord_data:function(listener) {
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/statistics/dashborad/get';
         var s_data = {};
@@ -816,7 +846,8 @@ var PageRequest = {
     },
     /** 查询用户信息 **/
     get_account_lenovo:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/base/account/list/get';
         var s_data = data;
@@ -827,7 +858,8 @@ var PageRequest = {
     },
     /** 查询商铺信息 **/
     get_shop_lenovo:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/base/shop/list/get';
         var s_data = data;
@@ -839,6 +871,7 @@ var PageRequest = {
     /* 修改用户信息 */
     account_info_modify:function(data, listener){
         "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/account/info/modify';
         var s_data = data;
@@ -850,6 +883,7 @@ var PageRequest = {
     /* 修改用户信息密码验证 */
     account_info_verify:function(data, listener){
         "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/account/info/verify';
         var s_data = data;
@@ -860,7 +894,8 @@ var PageRequest = {
     },
     /** 添加区域 **/
     get_region_area_list:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/region/areas/get';
         var s_data = data;
@@ -871,7 +906,8 @@ var PageRequest = {
     },
     /** 添加区域 **/
     add_region:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/region/add';
         var s_data = data;
@@ -882,7 +918,8 @@ var PageRequest = {
     },
     /** 修改区域 **/
     edi_region:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/region/modify';
         var s_data = data;
@@ -893,7 +930,8 @@ var PageRequest = {
     },
     /** 审核区域 **/
     aud_region:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/region/review';
         var s_data = data;
@@ -904,7 +942,8 @@ var PageRequest = {
     },
     /** 删除区域 **/
     del_region:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/region/disable';
         var s_data = data;
@@ -915,7 +954,8 @@ var PageRequest = {
     },
     /** 根据区域id获取区域的详细信息 **/
     get_region_by_id:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/region/get';
         var s_data = data;
@@ -926,7 +966,8 @@ var PageRequest = {
     },
     /** 获取增加商品时需要的选择列表 **/
     get_shop_choice:function(listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/base/shop/choice/get';
         var s_data = {};
@@ -937,7 +978,8 @@ var PageRequest = {
     },
     /** 根据商品ID获取商品详细信息 **/
     get_shop_by_id:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/shop/get';
         var s_data = data;
@@ -948,7 +990,8 @@ var PageRequest = {
     },
     /** 添加货修改商铺信息 **/
     change_shop:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/shop/change';
         var s_data = data;
@@ -959,7 +1002,8 @@ var PageRequest = {
     },
     /** 审核商铺信息 **/
     aud_shop:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/shop/audit';
         var s_data = data;
@@ -970,7 +1014,8 @@ var PageRequest = {
     },
     /** 删除商铺信息 **/
     del_shop:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/shop/delete';
         var s_data = data;
@@ -981,7 +1026,7 @@ var PageRequest = {
     },
     /** 地图获取区域信息 **/
     map_get_regions:function(listener){
-        "use strict"
+        "use strict";
         
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/map/regions/list/get';
@@ -993,7 +1038,7 @@ var PageRequest = {
     },
     /** 地图获取商铺信息 **/
     map_get_shops:function(listener){
-        "use strict"
+        "use strict";
         
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/map/shops/list/get';
@@ -1005,7 +1050,7 @@ var PageRequest = {
     },
     /** 地图获取商铺信息 **/
     map_get_shop:function(data, listener){
-        "use strict"
+        "use strict";
         
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/map/shop/get';
@@ -1017,7 +1062,8 @@ var PageRequest = {
     },
     /** map打印接口 **/
     map_print_image:function(listener, r_data, content){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/map/image2pdf';
         var s_data = r_data;
@@ -1028,7 +1074,8 @@ var PageRequest = {
     },
     /** 消防工单检查项配置 **/
     get_firesafety_setting:function(listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/firesafety/setting/get';
         var s_data = {};
@@ -1039,7 +1086,8 @@ var PageRequest = {
     },
     /** 消防工单列表 **/
     get_firesafety_list:function(listener, r_data, content){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/firesafety/list/get';
         var s_data = r_data;
@@ -1050,7 +1098,8 @@ var PageRequest = {
     },
     /** 增加消防工单列表 **/
     change_firesafety:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/firesafety/update';
         var s_data = data;
@@ -1061,7 +1110,8 @@ var PageRequest = {
     },
     /** 根据消防工单主表ID获取信息 **/
     get_firesafety_by_id:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/firesafety/get';
         var s_data = data;
@@ -1072,7 +1122,8 @@ var PageRequest = {
     },
     /** 根据消防工单主表ID获取信息 **/
     get_firesafety_query_by_id:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/firesafety/query/get';
         var s_data = data;
@@ -1083,7 +1134,8 @@ var PageRequest = {
     },
     /** 根据消防工单主表ID获取信息 **/
     upload_firesafety_images:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/firesafety/image/upload';
         var s_data = data;
@@ -1093,7 +1145,8 @@ var PageRequest = {
         AjaxRequest.ajax_jsonp(s_type, s_url, s_data, s_listener, s_timeout, s_content);
     },
     sub_firesafety:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/firesafety/submit';
         var s_data = data;
@@ -1103,7 +1156,8 @@ var PageRequest = {
         AjaxRequest.ajax_jsonp(s_type, s_url, s_data, s_listener, s_timeout, s_content);
     },
     del_firesafety:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/firesafety/delete';
         var s_data = data;
@@ -1114,7 +1168,8 @@ var PageRequest = {
     },
     /** 测试接口 **/
     get_shows:function(listener,content){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/app/show';
         var s_data = {};
@@ -1125,7 +1180,8 @@ var PageRequest = {
     },
     /** 模糊查询人员信息 **/
     get_base_role_list:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/base/role/list/get';
         var s_data = data;
@@ -1136,7 +1192,8 @@ var PageRequest = {
     },
     /** 获取用户创建基础信息 **/
     get_account_choice:function( listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/account/choice/get';
         var s_data = {};
@@ -1147,7 +1204,8 @@ var PageRequest = {
     },
     /** 获取用户信息 **/
     get_account_by_id:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/account/get';
         var s_data = data;
@@ -1158,7 +1216,8 @@ var PageRequest = {
     },
     /** 添加用户信息 **/
     change_account:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/account/change';
         var s_data = data;
@@ -1169,7 +1228,8 @@ var PageRequest = {
     },
     /** 删除用户信息 **/
     del_account:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/account/delete';
         var s_data = data;
@@ -1180,7 +1240,8 @@ var PageRequest = {
     },
     /** 获取权限列表 **/
     get_permission_info_list:function (listener) {
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_data = {};
         var s_url = Settings.server + '/fmap/api/base/permission/list/get';
@@ -1191,7 +1252,8 @@ var PageRequest = {
     },
     /** 查询角色 **/
     get_role_by_id:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/role/get';
         var s_data = data;
@@ -1202,7 +1264,8 @@ var PageRequest = {
     },
     /** 新增、修改角色 **/
     add_role:function(data, listener) {
-        "use strict"
+        "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/role/change';
         var s_data = data;
@@ -1214,6 +1277,7 @@ var PageRequest = {
     /** 根据区域id获取消息的详细信息 **/
     get_push_message_by_id:function(data, listener){
         "use strict";
+
         var s_type = 'GET';
         var s_url = Settings.server + '/fmap/api/push_message/get';
         var s_data = data;
@@ -1224,7 +1288,8 @@ var PageRequest = {
     },
     /** 添加消息 **/
     add_push_message:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/push_message/add';
         var s_data = data;
@@ -1235,7 +1300,8 @@ var PageRequest = {
     },
     /** 删除消息 **/
     del_push_message:function(data, listener) {
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/push_message/disable';
         var s_data = data;
@@ -1246,7 +1312,8 @@ var PageRequest = {
     },
     /** 获取商铺检测状态列表、行业列表 **/
     get_map_base_chioce:function(listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/base/map/choice/get';
         var s_data = {};
@@ -1257,7 +1324,8 @@ var PageRequest = {
     },
     /** 获取商铺检测状态列表、行业列表 **/
     get_targzfile_reult:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/statistics/tar/get';
         var s_data = data;
@@ -1267,7 +1335,8 @@ var PageRequest = {
         AjaxRequest.ajax_jsonp(s_type, s_url, s_data, s_listener, s_timeout, s_content);
     },
     get_worker_targzfile_reult:function(data, listener){
-        "use strict"
+        "use strict";
+
         var s_type = 'POST';
         var s_url = Settings.server + '/fmap/api/statistics/worker/tar/get';
         var s_data = data;
@@ -1275,52 +1344,68 @@ var PageRequest = {
         var s_timeout = 60000;
         var s_content = "正在请求打包，请稍候......";
         AjaxRequest.ajax_jsonp(s_type, s_url, s_data, s_listener, s_timeout, s_content);
-    },
-}
+    }
+};
 
 /**
  * 自定义正则表达示验证方法
  */
 //电话号码
 $.validator.addMethod("isMobile", function(value, element) {
+    "use strict";
+
     var length = value.length;
     var mobile = /^1[3,5,7,8]\d{9}$/;
-    return this.optional(element) || (length == 11 && mobile.test(value));
+    return this.optional(element) || (length === 11 && mobile.test(value));
 }, "请正确填写电话号码");
 //邮箱
 $.validator.addMethod("isEmail", function(value, element) {
+    "use strict";
+
     var length = value.length;
     var email = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
     return this.optional(element) || email.test(value);
 }, "请正确填写邮箱");
 //商户名称
 $.validator.addMethod("isValidity",function(value, element) {
+    "use strict";
+
     var validity = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/;
     return this.optional(element) || validity.test(value);
 },"请正确填写信息");
 //信用代码
 $.validator.addMethod("isSocialRedit", function(value, element) {
+    "use strict";
+
     var socialRegex = /^[1-9A-GY]{1}[1239]{1}[1-5]{1}[0-9]{5}[0-9A-Z]{10}$/;
     return this.optional(element) || socialRegex.test(value);
 }, "请正确填写营业执照编码");
 //整数
 $.validator.addMethod("isPositive",function(value, element) {
+    "use strict";
+
     var validity = /^\d+(?=\.{0,1}\d+$|$)/;
     return this.optional(element) || validity.test(value);
 },"请正确填写信息");
 //身份证
 $.validator.addMethod("isIdentityCard",function(value, element) {
+    "use strict";
+
     var validity = /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/;
     return this.optional(element) || validity.test(value);
 },"请正确填写信息");
 //账号密码
 $.validator.addMethod("isPWD",function(value, element) {
+    "use strict";
+
     var validity = /^.{3,}$/;
     return this.optional(element) || validity.test(value);
 },"请正确填写密码");
 
 //resize of div
 (function($, h, c) {
+    "use strict";
+
     var a = $([]),
         e = $.resize = $.extend($.resize, {}),
         i,

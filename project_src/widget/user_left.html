@@ -8,7 +8,12 @@
         {{ /if }}
     </div>
     <div class="pull-left info">
-        <p>{{ username }}</p>
+        <p>{{ if username }}
+                {{ username }}
+            {{ else }}
+                wormer
+            {{ /if }}
+        </p>
         <a href="#">
             <i class="fa fa-circle text-success"></i>在线
         </a>

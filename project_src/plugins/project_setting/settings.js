@@ -15,13 +15,15 @@ var cons_funcs = [
 ];
 for(var i=0,l=cons_funcs.length;i<l;i++) {  
     var func = cons_funcs[i];  
-    if(!console[func]) console[func] = function(){};  
+    if(!console[func]){
+        console[func] = function(){};
+    }
 }
 if(!console.memory){ console.memory = {};}
 console.clear();
 
 Date.prototype.Format = function (fmt) { //author: meizz 
-    "use strict"
+    "use strict";
     
     var o = {
         "M+": this.getMonth() + 1, //月份 
@@ -37,14 +39,15 @@ Date.prototype.Format = function (fmt) { //author: meizz
     } 
     for(var k in o){
         if (new RegExp("(" + k + ")").test(fmt)){
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         } 
     }
     return fmt;
 };
  
 $.fn.serializeObject = function(){
-    "use strict"
+    "use strict";
+
     var o = {};  
     var a = this.serializeArray();  
     $.each(a, function() {  
@@ -60,19 +63,22 @@ $.fn.serializeObject = function(){
 
 /** 验证数据是否有效**/
 var ValidData = function(val){
+    "use strict";
+
     return val !== null && val !== undefined && val !== '' ? true : false;
 };
 
 /** 时间格式化 **/
 var OutTime = function(){
-    "use strict"
+    "use strict";
+
     return new Date().Format('yyyy-MM-dd hh:mm:ss');
 };
 
 /** 输出工具类 */
 var Tools = {
     info:function(){
-        "use strict"
+        "use strict";
         
         if(Settings.debug === true){
             var con_char = OutTime() + ": ";
@@ -84,7 +90,7 @@ var Tools = {
     },
     /** 分组打印,可以输出对象 **/
     group:function(){
-        "use strict"
+        "use strict";
         
         if(Settings.debug === true){
             if(arguments.length>=1){
@@ -96,7 +102,7 @@ var Tools = {
         }
     },
     error:function(){
-        "use strict"
+        "use strict";
 
         if(Settings.debug === true){
             var con_char = OutTime() + ": " + arguments[0];
@@ -112,29 +118,38 @@ var Tools = {
             console.groupEnd();
         }
     },
+    noshow:function(){
+        "use strict";
+
+        return false;
+    },
     generatedata:function(rowscount, hasNullValues) {
+        "use strict";
+
         // prepare the data
         var data = new Array();
-        if (rowscount == undefined) rowscount = 100;
+
+        if (rowscount === undefined) {
+            rowscount = 100;
+        }
+
         var firstNames =
             [
-                "Andrew", "Nancy", "Shelley", "Regina", "Yoshi",
-                "Antoni", "Mayumi", "Ian", "Peter", "Lars", "Petra",
-                "Martin", "Sven", "Elio", "Beate", "Cheryl", "Michael", "Guylene"
+                "孙", "钱", "王", "李", "刘",
+                "司马", "欧阳", "成", "薛", "沈", "赵"
             ];
 
         var lastNames =
             [
-                "Fuller", "Davolio", "Burke", "Murphy", "Nagase", "Saavedra",
-                "Ohno", "Devling", "Wilson", "Peterson", "Winkler", "Bein",
-                "Petersen", "Rossi", "Vileid", "Saylor", "Bjorn", "Nodier"
+                "孙", "钱", "王", "李", "刘",
+                "司马", "欧阳", "成", "薛", "沈", "赵"
             ];
 
         var productNames =
             [
-                "Black Tea", "Green Tea", "Caffe Espresso", "Doubleshot Espresso",
-                "Caffe Latte", "White Chocolate Mocha", "Caramel Latte", "Caffe Americano",
-                "Cappuccino", "Espresso Truffle", "Espresso con Panna", "Peppermint Mocha Twist"
+                "佳百丽", "富程", "汽车抱枕", "车用抱枕", "靠垫腰靠靠枕腰垫", "汽车用品",
+                "富程", "车牌架新交规", "汽车个性牌照框", "航空铝", "可拆卸", "大众科鲁兹",
+                "苹果iphone"
             ];
 
         var priceValues =
