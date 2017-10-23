@@ -159,14 +159,14 @@ var OpenModal = {
     },
     /** 关闭 处理所有的确认框**/
     close_alert:function(){
-        "use strict"
+        "use strict";
 
         $('#modal_alert_div').remove();
     },
 
     /** 处理耗时的请求或页面类加载时显示 **/
     open_loading:function(content){
-        "use strict"
+        "use strict";
         
         if(!ValidData(content)){
             content = "加载文件中，请稍后......";
@@ -174,7 +174,7 @@ var OpenModal = {
 
         var show = function(htmltext){
 
-            if($('#modal_loading_div').length == 0 ){
+            if($('#modal_loading_div').length === 0 ){
 
                 var html = template.render(htmltext, {'content': content});
 
@@ -187,7 +187,7 @@ var OpenModal = {
     },
     /** 关闭处理耗时的请求或页面类加载时显示 **/
     close_loading:function(){
-        "use strict"
+        "use strict";
 
         $("#modal_loading_div").remove();
     }
@@ -251,52 +251,73 @@ var AjaxRequest = {
     
     /** 判断局部文件是否已经加载 **/
     cache_tp_has:function(url){
-        "use strict"
+        "use strict";
         
-        var result = {had:false, html_str: null}
+        var result = {had:false, html_str: null};
+
         for(var _cahced in AjaxRequest.cached_tp){
+
             if(AjaxRequest.cached_tp[_cahced].url === url){
+
                 result.had = true;
+
                 result.html_str = AjaxRequest.cached_tp[_cahced].html_str;
+
                 break;
+
             }
+
         }
+
         return result;
+
     },
     
     /** 判断js文件是否已经缓存 **/
     cache_js_has:function(url){
-        "use strict"
+        "use strict";
         
         var v_had = false;
+
         for(var v_url in this.cached_js){
+
             if(v_url === url){v_had = true;break;}
+
         }
         if(!v_had) { this.cached_js.push(url); }
+
         return v_had;
     },
     
     /** ajax加载js插件方法 **/
     ajax_file_script:function(url, method, options){
-        "use strict"
+        "use strict";
         
         if(AjaxRequest.cache_js_has(url)){
+
             Tools.info("Loading Cache Js File Finished.");
+
             if(typeof method==='function'){method();}
+
         }else{
-            options = $.extend( options || {}, {dataType: "script",url: url,cache: true}); 
+            options = $.extend( options || {}, {dataType: "script",url: url,cache: true});
+
             return $.ajax(options).done(
+
                 function(){
                     Tools.info("Loading Ajax Js File Finished.");
+
                     if(typeof method==='function'){method();}
+
                 });
             
         }
+
     },
     
     /** 网络请求局部模版文件方法: **/
     ajax_file:function(url, listener, content){
-        "use strict"
+        "use strict";
 
         var tp_cached = AjaxRequest.cache_tp_has(url);
 
@@ -304,7 +325,11 @@ var AjaxRequest = {
 
             Tools.info("Loading Cached File Success.");
 
-            if(typeof listener === "function"){ listener(tp_cached.html_str); }
+            if(typeof listener === "function"){
+
+                listener(tp_cached.html_str);
+
+            }
 
         }else{
 
@@ -326,7 +351,11 @@ var AjaxRequest = {
 
                 }
 
-                if(typeof listener === "function"){ listener(responseTxt); }
+                if(typeof listener === "function"){
+
+                    listener(responseTxt);
+
+                }
             };
 
             $("<div></div>").load(url, load_html_done);

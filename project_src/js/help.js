@@ -7,6 +7,9 @@ $(function() {
         /** 初始化 **/
         init_model();
 
+        /** **/
+        init_server_paging();
+
         init_paging();
 
         init_grid();
@@ -34,10 +37,86 @@ $(function() {
         });
     }
 
+
+    /*
+     * 带条件的分页查询
+     */
+
+    function init_server_paging(){
+        var theme = '';
+        var source =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'id', type:'int'},
+                    { name: 'last_login', type:'string'},
+                    { name: 'username', type:'string' },
+                    { name: 'email', type:'string' },
+                    { name: 'is_staff', type:'string' },
+                    { name: 'is_active', type:'string' },
+                    { name: 'is_superuser', type:'string' },
+                    { name: 'date_joined', type:'string' }
+                ],
+                url: Settings.server + '/api/user/list/get',
+                data: {},
+                root: 'DataRows',
+                processdata:function(data){//对data属性的扩展
+                    var username = $("#username").val();
+                    data.username = username;
+                    var email = $("#email").val();
+                    data.email = email;
+                },
+                beforeprocessing: function (data) {
+                    source.totalrecords = data.TotalRows;
+                },
+                sort: function() {
+                    $("#serving").jqxGrid('updatebounddata','sort');
+                }
+            };
+
+        var dataAdapter = new $.jqx.dataAdapter(source);
+
+        $("#serving").jqxGrid(
+            {
+                width: '100%',
+                source: dataAdapter,
+                theme: theme,
+                sortable: true,
+                pageable: true,
+                pagesize: 10,
+                pagesizeoptions: [10],
+                columnsresize: true,
+                virtualmode: true,
+                rendergridrows: function (params) {
+                    return params.data;
+                },
+                columns:
+                    [
+                        { text: '唯一编号', datafield: 'id', cellsalign:"right", align: 'center' },
+                        { text: '最近登录', datafield: 'last_login', cellsalign:"center", align: 'center'},
+                        { text: '登录用户', datafield: 'username', cellsalign:"left", align: 'center' },
+                        { text: '邮件地址', datafield: 'email', cellsalign:"left", align: 'center' },
+                        { text: '后台登录', datafield: 'is_staff', cellsalign:"center", align: 'center' },
+                        { text: '是否有效', datafield: 'is_active', cellsalign:"center", align: 'center' },
+                        { text: '默认状态', datafield: 'is_superuser', cellsalign:"center", align: 'center' },
+                        { text: '加入日期', datafield: 'date_joined', cellsalign:"center", align: 'center'}
+                    ]
+            }
+        );
+
+
+        $("#serving_search").click(function () {
+            $("#serving").jqxGrid('updatebounddata');
+        });
+
+        $("#serving").bind("bindingcomplete", function () {
+            $(".jqx-dropdownlist-state-normal").css("height", "19px");
+        });
+    }
+
     /*
      * 初始化分页表格
      */
-
 
     function init_paging(){
         var url = "images/testdata/beverages.txt";
