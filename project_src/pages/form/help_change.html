@@ -1,0 +1,31 @@
+<form class="form" id="{{ modal }}_form" role="form">
+    <!-- text input -->
+    <input type="hidden" id="{{ modal }}_id" name="id" value="{{ id }}" class="form-control">
+
+    <div class="row modal_div_row">
+        <div class="col-sm-2">
+            <label class="modal_div_span">登录用户:</label>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" id="{{ modal }}_username" name="username" value="{{ username }}"
+                   {{ if change=='info' }}disabled{{/if}}
+                class="form-control modal_div_input" placeholder="请输入用户姓名" required>
+        </div>
+        <div class="col-sm-2">
+            <label class="modal_div_span">邮箱地址:</label>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" id="{{ modal }}_email" name="email" value="{{ email }}"
+                   {{ if change=='info' }}disabled {{/if}}
+            class="form-control modal_div_input" placeholder="请输入用户身份证号码" required>
+        </div>
+    </div>
+    <div class="row modal_div_row">
+        <div class="col-sm-2">
+            <label class="modal_div_span">后台登录:</label>
+        </div>
+        <div class="col-sm-4">
+
+        </div>
+    </div>
+</form>

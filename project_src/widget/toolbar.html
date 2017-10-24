@@ -1,0 +1,36 @@
+{{ if powers.inf == true }}
+    <div class="temp_toolbar_button_div">
+        <button type="button" id='{{ modal }}_inf' data-click="click_inf" class="btn btn-block btn-sm btn-info">
+            <i class="fa fa-search"></i> 查看
+        </button>
+    </div>
+{{ /if }}
+{{ if powers.add == true }}
+    <div class="temp_toolbar_button_div">
+        <button type="button" id='{{ modal }}_add' data-click="click_add" class="btn btn-block btn-sm btn-success">
+            <i class="fa fa-plus"></i>新增
+        </button>
+    </div>
+{{ /if }}
+{{ if powers.edi == true }}
+    <div class="temp_toolbar_button_div">
+        <button type="button" id='{{ modal }}_edi' data-click="click_edi"  class="btn btn-block btn-sm btn-primary">
+            <i class="fa fa-edit"></i>修改
+        </button>
+    </div>
+{{ /if }}
+{{ if powers.aud == true }}
+    <div class="temp_toolbar_button_div">
+        <button type="button" id='{{ modal }}_aud' data-click="click_aud"  class="btn btn-block btn-sm btn-warning">
+            <i class="fa fa-trash-o"></i>审核
+        </button>
+    </div>
+{{ /if }}
+{{ if powers.del == true }}
+    <div class="temp_toolbar_button_div">
+        <button type="button" id='{{ modal }}_del' data-click="click_del"  class="btn btn-block btn-sm btn-danger">
+            <i class="fa fa-trash-o"></i>删除
+        </button>
+    </div>
+{{ /if }}
+

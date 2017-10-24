@@ -40,6 +40,7 @@
         "CharTools",
         "TableTools",
         "FormTools",
+        "CommonUse",
         "NavOpenAction"
     ]
 }

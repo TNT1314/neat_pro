@@ -61,11 +61,11 @@ var OpenModal = {
     open:function(listener){
         "use strict";
 
-        var show = function(htmltext){
+        var load_ready = function(html_text){
 
             if( $('#modal_div').length === 0){
 
-                var html = template.render(htmltext, listener);
+                var html = template.render(html_text, listener);
 
                 $('body').append(html);
 
@@ -84,7 +84,7 @@ var OpenModal = {
 
         };
 
-        AjaxRequest.ajax_widget('widget/modal.html', show);
+        AjaxRequest.ajax_widget('widget/modal.html', load_ready);
     },
 
     /** 收起处理单据明细页面 **/
@@ -193,13 +193,15 @@ var OpenModal = {
     }
 };
 
+
+
 /*
  *
  * 联想控件处理
  *
  */
 var AutoInput = function (option){
-    "use strict"
+    "use strict";
 
     var element_id = option.id;
     var element = $("#"+element_id);
@@ -362,6 +364,16 @@ var AjaxRequest = {
         }
     },
 
+    ajax_form:function(pagename, listener){
+        "use strict";
+
+        var content = "加载模版中，请稍等...";
+
+        var url = "pages/form/"+ pagename +".html";
+
+        this.ajax_file(url, listener, content);
+    },
+
     /** 网络请求控件方法: **/
     ajax_widget:function(url, listener){
         "use strict";
@@ -379,11 +391,11 @@ var AjaxRequest = {
 
                 if(statusTxt === "success"){
 
+                    AjaxRequest.cached_tp.push({url: url, html_str: responseTxt});
+
                     Tools.info("Ajax Loading File Success.");
 
                     if(typeof listener === "function"){ listener(responseTxt); }
-
-                    AjaxRequest.cached_tp.push({url: url, html_str: responseTxt});
 
                 }else{
                     Tools.error("Ajax Loading File Error.", url, responseTxt, xhr);
@@ -454,7 +466,7 @@ var AjaxRequest = {
             },
             complete: function(){
                 OpenModal.close_loading();
-                if(typeof listener.complete === "function"){ listener.complete();}
+                if(typeof listener.complete === "function"){ listener.complete(); }
             }
         });
     }
@@ -539,85 +551,10 @@ var NavTable = {
         });
 
     },
-
-    /** 初始化用户 **/
-    init_user:function(data){
-        "use strict";
-
-        if(!ValidData(data) || Settings.debug){
-            data = {
-                username: "Wormer",
-                realname: "wormer.cn",
-                company: "建设者家园网络科技有限公司",
-            };
-        }
-
-        NavTable.change_threme();
-
-        // // 加载左侧用户信息
-        // AjaxRequest.ajax_widget(
-        //     "widget/user_left.html",
-        //     function(htmltext){
-        //         var html_str = template.render(htmltext, data);
-        //         $(html_str).insertBefore($("#menu_search"));
-        //     }
-        // );
-
-        // 加载顶部用户信息
-        AjaxRequest.ajax_widget(
-            "widget/user_top.html",
-            function(htmltext){
-                var html_str = template.render(htmltext, data);
-                $(html_str).insertBefore($("#menus_setting"));
-            }
-        );
-    },
-
-    /** 初始化菜单 **/
-    menu_init:function(data){
-        "use strict"
-
-        if(!ValidData(data)){
-            data = { menus: [] };
-        }
-        data.server = Settings.server;
-
-        if(Settings.debug){
-            var help = {
-                id: 100000,
-                perm_url: '/help?',
-                model_name: 'help',
-                name: "开发帮助",
-                perm_icon: "fa-question-circle",
-                childs: [],
-            };
-            data.menus.push(help);
-        }
-
-        NavTable.set_cached_menus(data.menus);
-
-        var temp_ready = function(htmltext){
-            var html_str = template.render(htmltext, data);
-            $(".sidebar-menu").append(html_str);
-            $('.click_menu').on('click', function(e){
-                if($(e.target).attr('data-click') == 'on'){
-                    NavTable.addTab(e.target);
-                }
-            });
-            $(".nav-click-lable").on('click',function(){
-               $(this).next().click();
-            });
-
-            NavTable.open_menu_by_name("开发帮助");
-            Tools.info("Init Menus Success.");
-        };
-
-        AjaxRequest.ajax_widget("widget/menu.html", temp_ready);
-    },
     
     /** 根据菜单名称打开菜单 **/
     open_menu_by_name:function(condition){
-        "use strict"
+        "use strict";
         
         var menu = null;
         for(var i = 0; i < NavTable.cache_menus.length; i++){
@@ -629,7 +566,7 @@ var NavTable = {
 
     /** 测试页面跳转 **/
     open_menu_by_name_new:function(condition,data){
-        "use strict"
+        "use strict";
 
         var menu = null;
         for(var i = 0; i < NavTable.cache_menus.length; i++){
@@ -648,7 +585,7 @@ var NavTable = {
     * 打开菜单
     */
     open_menu:function(menu){
-        "use strict"
+        "use strict";
         
         if($("#menu_"+menu.id).parent().parent().hasClass('treeview-menu')){
             $("#menu_"+menu.id).parent().parent().parent().children().first().click();
@@ -658,7 +595,7 @@ var NavTable = {
     
     /** 点击菜单添加lab */
 	addTab:function(menu){
-        "use strict"
+        "use strict";
         
         var m_id =  $(menu).attr("data-id");
         var m_model = $(menu).attr("data-model");
@@ -676,7 +613,9 @@ var NavTable = {
 		if(!$('#'+id)[0]){
             /** 添加页签 **/
             var dom_i = m_close ? '<img src="images/close2.gif" class="nav-tab-close" id="close_'+ id +'" tabclose="'+ id +'" ></img>':'';
+
             var dom_a = '<a class="nav-tab-a" href="#'+ container +'" role="tab" data-toggle="tab" >'+ m_name + dom_i +'</a>';
+
             $('#main-nav-tab').append('<li role="presentation" class="" id="'+id+'">' + dom_a + '</li>');
 
             /** 添加容器 **/
@@ -685,23 +624,19 @@ var NavTable = {
 			/** 添加关闭菜单 **/
             if(m_close){ $('#close_'+id).on( "click", function(){ NavTable.closeTab(this);});}
 
-            var load_html = function(htmltext){
+            var load_html = function(html_text){
 
-                $('#'+container).html(htmltext);
+                var renderd = template.render(html_text, {modal: m_model});
 
-                $("#"+id).addClass("active");
+                $('#'+ container).html(renderd);
 
-                $("#"+container).addClass("active");
+                $("#"+ id).addClass("active");
 
-                var load_js_down = function(){
-
-                    Tools.info("Add NavTab Success.");
-
-                };
+                $("#"+ container).addClass("active");
 
                 var jss = [];
 
-                var js_input = $('#'+container).find($(".ajax_load_plugs"));
+                var js_input = $('#'+ container).find($(".ajax_load_plugs"));
 
                 if(js_input){
 
@@ -715,9 +650,12 @@ var NavTable = {
                 if(ValidData(m_model)){ jss.push(m_model+".js"); }
                 
                 /** 加载所有需要的js **/
-                NavTable.loading_plugs(jss, load_js_down);
+                NavTable.loading_plugs(jss, function(){ Tools.info("Add NavTab Success."); });
+
             };
+
             AjaxRequest.ajax_file("pages/"+m_model+".html", load_html, load_file_content);
+
 		}else{
 
             $("#"+id).addClass("active");
@@ -730,7 +668,7 @@ var NavTable = {
 
 	/** 关闭tab面板 **/
 	closeTab:function(item){
-        "use strict"
+        "use strict";
 
         try{
             var val = $(item).attr('tabclose');
@@ -754,13 +692,13 @@ var NavTable = {
     
     /** 添加插件 **/
     loading_plugs:function(url_list, listen){
-        "use strict"
+        "use strict";
         
         Tools.info("Page Dependens Page:" + url_list.length);
 
         for(var i=0;i<url_list.length;i++){
 
-            if((i+1) == url_list.length){
+            if((i+1) === url_list.length){
 
                 AjaxRequest.ajax_file_script('js/' + url_list[i], listen);
 
@@ -771,45 +709,123 @@ var NavTable = {
         }
     }
     
-}
+};
 
-/** 列表方法类 **/
-var TableTools = {
-    /** 请求方式 **/
-    ajax_type: 'GET',
-    
-    /** 数据返回格式 **/
-    ajax_format: Settings.ajax_format,
-    
-    /** 获取选中纪录的值 **/
-    get_table_selected:function(table, column){
-        "use strict"
-        
-        /** 获取选中纪录某个字段 **/
-        return table.rows('.selected').data().length==1 ? table.rows('.selected').data()[0][column] : null;
-    },
-    
-    /** table list 获取请求地址 **/
-    get_url:function(url){
-        "use strict";
-        
-        return Settings.ajax_format=='jsonp' ? Settings.server + url + '?format=jsonp' : Settings.server + url;
-    },
-    
-    /** table list 单选监听 **/
-    selected_listener:function(table, table_name){
+/** 常用弹出框！ **/
+var CommonUse = {
+
+    /** 初始化用户 **/
+    init_user:function(data){
         "use strict";
 
-        $('#'+table_name+' tbody').on('click', 'tr', function () {
-            if($(this).hasClass('selected') ) {
-                $(this).removeClass('selected');
-            }else{
-                table.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
+        if(!ValidData(data) || Settings.debug){
+            data = {
+                username: "Wormer",
+                realname: "wormer.cn",
+                company: "建设者家园网络科技有限公司"
+            };
+        }
+
+        NavTable.change_threme();
+
+        // // 加载左侧用户信息
+        // AjaxRequest.ajax_widget(
+        //     "widget/user_left.html",
+        //     function(html_text){
+        //         var html_str = template.render(html_text, data);
+        //         $(html_str).insertBefore($("#menu_search"));
+        //     }
+        // );
+
+        // 加载顶部用户信息
+        AjaxRequest.ajax_widget(
+            "widget/user_top.html",
+            function(html_text){
+                var html_str = template.render(html_text, data);
+                $(html_str).insertBefore($("#menus_setting"));
             }
+        );
+    },
+
+    /** 初始化菜单 **/
+    init_menu:function(data){
+        "use strict";
+
+        if(!ValidData(data)){
+            data = { menus: [] };
+        }
+        data.server = Settings.server;
+
+        if(Settings.debug){
+            var help = {
+                id: 100000,
+                perm_url: '/help?',
+                model_name: 'help',
+                name: "开发帮助",
+                perm_icon: "fa-question-circle",
+                childs: [],
+            };
+            data.menus.push(help);
+        }
+
+        NavTable.set_cached_menus(data.menus);
+
+        var temp_ready = function(html_text){
+            var html_str = template.render(html_text, data);
+            $(".sidebar-menu").append(html_str);
+            $('.click_menu').on('click', function(e){
+                if($(e.target).attr('data-click') == 'on'){
+                    NavTable.addTab(e.target);
+                }
+            });
+            $(".nav-click-lable").on('click',function(){
+                $(this).next().click();
+            });
+
+            NavTable.open_menu_by_name("开发帮助");
+            Tools.info("Init Menus Success.");
+        };
+
+        AjaxRequest.ajax_widget("widget/menu.html", temp_ready);
+    },
+    select_row_warn:function(){
+        "use strict";
+
+        OpenModal.open_alert({
+            option: "warn",
+            body: "请选择一条数据进行操作!"
         });
+    },
+    get_toolbar_render:function(modal, action, powers){
+        "use strict";
+
+        if(Settings.debug === true){
+            powers = {
+                inf:true,
+                add:true,
+                edi:true,
+                aud:true,
+                del:true
+            };
+        }
+
+        var toolbar_ready = function(html_text){
+
+            var data = {};
+            data.modal = modal;
+            data.powers = powers;
+
+            var html_str = template.render(html_text, data);
+
+            $("#"+ modal).find($(".temp_toolbar_left")).html(html_str);
+
+            if(typeof action === 'function'){ action(modal); }
+        };
+
+        AjaxRequest.ajax_widget("widget/toolbar.html", toolbar_ready);
     }
 };
+
 
 /** 业务请求方法类 **/
 var PageRequest = {

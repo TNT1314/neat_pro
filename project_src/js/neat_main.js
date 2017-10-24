@@ -21,10 +21,10 @@ $(function() {
     function program_init_user(){
         var listener = {
             success:function(data){
-                NavTable.init_user(data);
+                CommonUse.init_user(data);
             },
             complete:function(){
-                NavTable.init_user();
+                CommonUse.init_user();
             }
         };
         PageRequest.get_account_info(listener);
@@ -36,10 +36,10 @@ $(function() {
     function program_init_menu(){
         var listener = {
             success:function(data){
-                NavTable.menu_init(data);
+                CommonUse.init_menu(data);
             },
             complete:function(){
-                NavTable.menu_init();
+                CommonUse.init_menu();
             }
         };
         PageRequest.get_menus(listener);
