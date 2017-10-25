@@ -44,6 +44,35 @@ Date.prototype.Format = function (fmt) { //author: meizz
     }
     return fmt;
 };
+
+
+Number.prototype.format=function(decimals, dec_point, thousands_sep){
+    "use strict";
+
+    var num = (this + '').replace(/[^0-9+\-Ee.]/g, '');
+
+    var n = !isFinite(+num) ? 0 : +num;
+    var prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
+    var sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep;
+    var dec = (typeof dec_point === 'undefined') ? '.' : dec_point;
+
+    var toFixedFix = function(n, prec) {
+        var fix_k = Math.pow(10, prec);
+        return '' + (Math.round(n * fix_k) / fix_k).toFixed(prec);
+    };
+
+    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+    var rlt_s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    if (rlt_s[0].length > 3) {
+        rlt_s[0] = rlt_s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+
+    if ((rlt_s[1] || '').length < prec) {
+        rlt_s[1] = rlt_s[1] || '';
+        rlt_s[1] += new Array(prec - rlt_s[1].length + 1).join('0');
+    }
+    return rlt_s.join(dec);
+};
  
 $.fn.serializeObject = function(){
     "use strict";

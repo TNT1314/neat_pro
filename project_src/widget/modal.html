@@ -12,15 +12,15 @@
 
                 <h4 class="modal-title">
 
-                    {{ if option == 'inf' }}
+                    {{ if title == 'inf' }}
                         <div style="color:#00c0ef;">  <i class="fa fa-search"></i>查看</div>
-                    {{ else if option =='add' }}
+                    {{ else if title =='add' }}
                         <div style="color:#00a65a;">  <i class="fa fa-plus"></i>添加</div>
-                    {{ else if option =='edi' }}
+                    {{ else if title =='edi' }}
                         <div style="color:#3c8dbc;">  <i class="fa fa-edit"></i>修改</div>
-                    {{ else if option =='aud' }}
+                    {{ else if title =='aud' }}
                         <div style="color:#f39c12;">  <i class="fa fa-trash-o"></i>审核</div>
-                    {{ else if option =='del' }}
+                    {{ else if title =='del' }}
                         <div style="color:#dd4b39;">  <i class="fa fa-trash-o"></i>删除</div>
                     {{ else }}
                         <div style="color:#00c0ef;">  <i class="fa fa-search"></i>查看</div>
@@ -31,7 +31,7 @@
 
             <div class="modal-body modal_div_dialog">
                 {{ if body }}
-                    {{ #body }}
+                    {{ @body }}
                 {{ else }}
                     <p>请设置页面内容</p>
                 {{ /if }}

@@ -133,17 +133,211 @@ $(function() {
      */
     function click_add(){
         AjaxRequest.ajax_form("help_change", function(html_text){
-            var tmp_form = template.render(html_text,{modal: modal});
+            var tmp_form = template.render(html_text, { modal: modal});
             var open_ready = {
-                option: "add",
+                title: "add",
                 body: tmp_form,
-                sure: function(){
-                    Tools.info("click_add");
-                },
+                done: modal_done,
+                sure: modal_sure,
                 sure_show: "添加用户"
             };
             OpenModal.open(open_ready);
         });
-    }
 
+        /** 提交方法 **/
+        function modal_sure(){
+            Tools.error("modal_sure excute", modal);
+        }
+
+        /** 加载完成监听 **/
+        function modal_done(){
+            var theme = "";
+            var data = [];
+            var source = {
+                localdata: data,
+                datatype: "json",
+                datafields:
+                    [
+                        { name: 'w_name', type: 'string' },
+                        { name: 'w_unit', type: 'string' },
+                        { name: 'w_price', type: 'number' },
+                        { name: 'w_count', type: 'number' },
+                        { name: 'w_total', type: 'number' }
+                    ],
+                updaterow: function (rowid, rowdata, commit) {
+                    commit(true);
+                }
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+
+            var item_grid = $("#"+ modal + "_item_list");
+
+            item_grid.jqxGrid({
+                width: '100%',
+                theme: theme,
+                editable: true,
+                showstatusbar: true,
+                source: dataAdapter,
+                renderstatusbar: function (status_bar) {
+
+                    var container = $("<div class='table_tool_div'></div>");
+                    var addButton = $("<div class='table_tool_btn'><span><i class='fa fa-plus'></i>添加</span></div>");
+                    var delButton = $("<div class='table_tool_btn'><span><i class='fa fa-trash-o'></i>删除</span></div>");
+
+                    var total_span = $("<div class='table_tool_total'>合计：¥<span class='table_total_edit'>0.00</span></div>");
+
+                    container.append(addButton);
+                    container.append(delButton);
+                    container.append(total_span);
+
+                    status_bar.append(container);
+
+                    addButton.jqxButton({ theme: theme, width: 60, height: 20 });
+                    delButton.jqxButton({ theme: theme, width: 65, height: 20 });
+
+                    addButton.click(function() {
+                        var row = {w_name:"", w_unit:"", w_price: 0, w_count: 1, w_total: 0.00};
+                        item_grid.jqxGrid('addrow', 0, row);
+                        item_grid.jqxGrid('selectrow', 0);
+                        item_grid.jqxGrid('begincelledit', 0, "w_name");
+                    });
+                    delButton.click(function() {
+                        var row_index = item_grid.jqxGrid('getselectedrowindex');
+                        var row_count = item_grid.jqxGrid('getdatainformation').rowscount;
+                        if (row_index >= 0 && row_index < row_count) {
+                            item_grid.jqxGrid('deleterow', row_index);
+                        }
+                    });
+                },
+                columns: [
+                    {
+                        text: '工序名称',
+                        datafield: 'w_name',
+                        cellsalign: 'left',
+                        columntype: 'combobox',
+                        createeditor: function (row, column, editor) {
+                            // assign a new data source to the combobox.
+                            var d_set = {
+                                url: Settings.server + '/api/user/list/name/get',
+                                data: {},
+                                async: true,
+                                datatype: "json",
+                                root: 'DataRows',
+                                datafields: [
+                                    { name: 'id' },
+                                    { name: 'username' }
+                                ]
+                            };
+                            // prepare the data
+                            var d_adapter = new $.jqx.dataAdapter(d_set,
+                                {
+                                    formatData: function (data) {
+                                        data.username = editor.jqxComboBox('searchString');
+                                        return data;
+                                    }
+                                });
+
+                            editor.jqxComboBox({
+                                width: '100%',
+                                source: d_adapter,
+                                minLength: 2,
+                                valueMember: "id",
+                                displayMember: "username",
+                                selectedIndex: 0,
+                                autoOpen: true,
+                                remoteAutoComplete: true,
+                                promptText: "请填写工序名称",
+                                search: function(text){
+                                    d_adapter.dataBind(text);
+                                }
+                            });
+
+                            editor.bind('change', function(event){
+                                var id = event.args.item.value;
+                                var rep = {
+                                    success:function(data){
+                                        var row_index = item_grid.jqxGrid('getselectedrowindex');
+                                        item_grid.jqxGrid('setcellvalue', row_index, 'w_unit', data.json.is_superuser);
+                                        item_grid.jqxGrid('setcellvalue', row_index, 'w_price', 2.425);
+
+                                        var price = item_grid.jqxGrid('getcellvalue', row_index, 'w_price');
+                                        var count = item_grid.jqxGrid('getcellvalue', row_index, 'w_count');
+
+                                        var row_total = CharTools.multify(price,count);
+                                        item_grid.jqxGrid('setcellvalue', row_index, 'w_total', row_total);
+
+                                        total_plus();
+                                    }
+                                };
+                                PageRequest.get_user_by_id({id: id}, rep);
+                            });
+                        },
+                        // update the editor's value before saving it.
+                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
+                            if (!ValidData(newvalue)) {
+                                return oldvalue;
+                            }
+                        }
+                    },
+                    { text: '计量单位', datafield: 'w_unit', columntype: 'numberinput', cellsalign: 'left', editable: false },
+                    {
+                        text: '单位价格',
+                        datafield: 'w_price',
+                        columntype: 'numberinput',
+                        createeditor: function (row, cellvalue, editor) {
+                            editor.jqxNumberInput({ decimalDigits: 3, digits: 6});
+                            editor.bind("valuechanged", function(event){
+                                var price = event.args.value;
+                                var row_index = item_grid.jqxGrid('getselectedrowindex');
+                                var count = item_grid.jqxGrid('getcellvalue', row_index, 'w_count');
+
+                                var row_total = CharTools.multify(price, count);
+                                item_grid.jqxGrid('setcellvalue', row_index, 'w_total', row_total);
+
+                                total_plus();
+                            });
+                        },
+                        cellsalign: 'right',
+                        cellsformat: 'c2'
+                    },
+                    {
+                        text: '计件数量',
+                        datafield: 'w_count',
+                        columntype: 'numberinput',
+                        createeditor: function (row, cellvalue, editor) {
+                            editor.jqxNumberInput({ decimalDigits: 0, digits: 6});
+                            editor.bind("valuechanged", function(event){
+                                var row_index = item_grid.jqxGrid('getselectedrowindex');
+                                var count = event.args.value;
+                                var price = item_grid.jqxGrid('getcellvalue', row_index, 'w_price');
+
+                                var row_total = CharTools.multify(price,count);
+                                item_grid.jqxGrid('setcellvalue', row_index, 'w_total', row_total);
+
+                                total_plus();
+                            });
+                        },
+                        cellsalign: 'right'},
+                    {
+                        text: '总计价格',
+                        datafield: 'w_total',
+                        editable: false,
+                        cellsalign: 'right',
+                        cellsformat: 'c2'}
+                ]
+            });
+
+            function total_plus(){
+                var all_rows = item_grid.jqxGrid('getrows');
+                var result_total = 0;
+                for(var i=0; i< all_rows.length;i++){
+                    result_total += all_rows[i].w_total;
+                }
+                var result_show = result_total.format(2);
+
+                $(".table_total_edit").html(result_show);
+            }
+        }
+    }
 })();
