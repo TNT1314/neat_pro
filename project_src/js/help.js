@@ -207,6 +207,7 @@ $(function() {
                         var row_count = item_grid.jqxGrid('getdatainformation').rowscount;
                         if (row_index >= 0 && row_index < row_count) {
                             item_grid.jqxGrid('deleterow', row_index);
+                            total_plus();
                         }
                     });
                 },
@@ -259,7 +260,7 @@ $(function() {
                                     success:function(data){
                                         var row_index = item_grid.jqxGrid('getselectedrowindex');
                                         item_grid.jqxGrid('setcellvalue', row_index, 'w_unit', data.json.is_superuser);
-                                        item_grid.jqxGrid('setcellvalue', row_index, 'w_price', 2.425);
+                                        item_grid.jqxGrid('setcellvalue', row_index, 'w_price', 0);
 
                                         var price = item_grid.jqxGrid('getcellvalue', row_index, 'w_price');
                                         var count = item_grid.jqxGrid('getcellvalue', row_index, 'w_count');
@@ -286,7 +287,7 @@ $(function() {
                         datafield: 'w_price',
                         columntype: 'numberinput',
                         createeditor: function (row, cellvalue, editor) {
-                            editor.jqxNumberInput({ decimalDigits: 3, digits: 6});
+                            editor.jqxNumberInput({ decimalDigits: 2, digits: 6});
                             editor.bind("valuechanged", function(event){
                                 var price = event.args.value;
                                 var row_index = item_grid.jqxGrid('getselectedrowindex');
