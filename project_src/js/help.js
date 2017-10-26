@@ -146,11 +146,16 @@ $(function() {
 
         /** 提交方法 **/
         function modal_sure(){
-            Tools.error("modal_sure excute", modal);
+            var item_grid = $("#"+ modal + "_item_list");
+            var item_data = item_grid.jqxGrid('getrows');
+
+            Tools.group("item_data:", item_data);
         }
 
         /** 加载完成监听 **/
         function modal_done(){
+            var item_grid = $("#"+ modal + "_item_list");
+
             var theme = "";
             var data = [];
             var source = {
@@ -158,6 +163,7 @@ $(function() {
                 datatype: "json",
                 datafields:
                     [
+                        { name: 'w_id', type: 'string' },
                         { name: 'w_name', type: 'string' },
                         { name: 'w_unit', type: 'string' },
                         { name: 'w_price', type: 'number' },
@@ -171,14 +177,15 @@ $(function() {
 
             var dataAdapter = new $.jqx.dataAdapter(source);
 
-            var item_grid = $("#"+ modal + "_item_list");
-
             item_grid.jqxGrid({
                 width: '100%',
                 theme: theme,
                 editable: true,
                 showstatusbar: true,
                 source: dataAdapter,
+                ready: function(){
+                    item_grid.jqxGrid('hidecolumn', 'w_id');
+                },
                 renderstatusbar: function (status_bar) {
 
                     var container = $("<div class='table_tool_div'></div>");
@@ -199,8 +206,9 @@ $(function() {
                     addButton.click(function() {
                         var row = {w_name:"", w_unit:"", w_price: 0, w_count: 1, w_total: 0.00};
                         item_grid.jqxGrid('addrow', 0, row);
-                        item_grid.jqxGrid('selectrow', 0);
-                        item_grid.jqxGrid('begincelledit', 0, "w_name");
+                        var row_count = item_grid.jqxGrid('getdatainformation').rowscount;
+                        item_grid.jqxGrid('selectrow', (row_count-1));
+                        item_grid.jqxGrid('begincelledit', (row_count-1), "w_name");
                     });
                     delButton.click(function() {
                         var row_index = item_grid.jqxGrid('getselectedrowindex');
@@ -212,6 +220,7 @@ $(function() {
                     });
                 },
                 columns: [
+                    { text: '工序编号', datafield: 'w_id', columntype: 'numberinput', cellsalign: 'right', editable: false },
                     {
                         text: '工序名称',
                         datafield: 'w_name',
@@ -231,7 +240,7 @@ $(function() {
                                 ]
                             };
                             // prepare the data
-                            var d_adapter = new $.jqx.dataAdapter(d_set,
+                            var edit_adapter = new $.jqx.dataAdapter(d_set,
                                 {
                                     formatData: function (data) {
                                         data.username = editor.jqxComboBox('searchString');
@@ -241,7 +250,7 @@ $(function() {
 
                             editor.jqxComboBox({
                                 width: '100%',
-                                source: d_adapter,
+                                source: edit_adapter,
                                 minLength: 2,
                                 valueMember: "id",
                                 displayMember: "username",
@@ -250,17 +259,21 @@ $(function() {
                                 remoteAutoComplete: true,
                                 promptText: "请填写工序名称",
                                 search: function(text){
-                                    d_adapter.dataBind(text);
+                                    edit_adapter.dataBind(text);
                                 }
                             });
 
-                            editor.bind('change', function(event){
-                                var id = event.args.item.value;
-                                var rep = {
+                            editor.bind('select', function(event){
+                                var work_id = event.args.item.value;
+                                var row_index = item_grid.jqxGrid('getselectedrowindex');
+
+                                item_grid.jqxGrid('setcellvalue', row_index, 'w_id', work_id);
+
+                                var resquest_callback = {
                                     success:function(data){
-                                        var row_index = item_grid.jqxGrid('getselectedrowindex');
+
                                         item_grid.jqxGrid('setcellvalue', row_index, 'w_unit', data.json.is_superuser);
-                                        item_grid.jqxGrid('setcellvalue', row_index, 'w_price', 0);
+                                        item_grid.jqxGrid('setcellvalue', row_index, 'w_price', 0.36);
 
                                         var price = item_grid.jqxGrid('getcellvalue', row_index, 'w_price');
                                         var count = item_grid.jqxGrid('getcellvalue', row_index, 'w_count');
@@ -269,12 +282,13 @@ $(function() {
                                         item_grid.jqxGrid('setcellvalue', row_index, 'w_total', row_total);
 
                                         total_plus();
+
+                                        item_grid.jqxGrid('begincelledit', row_index, "w_price");
                                     }
                                 };
-                                PageRequest.get_user_by_id({id: id}, rep);
+                                PageRequest.get_user_by_id({id: work_id}, resquest_callback);
                             });
                         },
-                        // update the editor's value before saving it.
                         cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
                             if (!ValidData(newvalue)) {
                                 return oldvalue;
