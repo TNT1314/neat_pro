@@ -1,6 +1,6 @@
 $(function() {
 
-    "use strict"
+    "use strict";
 
     try {
 
@@ -21,13 +21,13 @@ $(function() {
     function program_init_user(){
         var listener = {
             success:function(data){
-                CommonUse.init_user(data);
+                CommonUse.init_user(data.json);
             },
             complete:function(){
                 CommonUse.init_user();
             }
         };
-        PageRequest.get_account_info(listener);
+        PageRequest.get_user_info(listener);
     }
 
     /*

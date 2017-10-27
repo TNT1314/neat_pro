@@ -23,7 +23,7 @@ $(function() {
         var theme = '';
         var source =
             {
-                url: Settings.server + '/api/user/list/get',
+                url: Settings.server + '/api/test/list/get',
                 datatype: "json",
                 root: 'DataRows',
                 data: {},
@@ -229,7 +229,7 @@ $(function() {
                         createeditor: function (row, column, editor) {
                             // assign a new data source to the combobox.
                             var d_set = {
-                                url: Settings.server + '/api/user/list/name/get',
+                                url: Settings.server + '/api/test/list/name/get',
                                 data: {},
                                 async: true,
                                 datatype: "json",

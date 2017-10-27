@@ -73,6 +73,25 @@ Number.prototype.format=function(decimals, dec_point, thousands_sep){
     }
     return rlt_s.join(dec);
 };
+
+
+$(function () {
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": getCookie("csrftoken") }
+    });
+});
+
+function getCookie(name) {
+    "use strict";
+
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+
+    if(arr=document.cookie.match(reg)){
+        return unescape(arr[2]);
+    }else{
+        return null;
+    }
+}
  
 $.fn.serializeObject = function(){
     "use strict";

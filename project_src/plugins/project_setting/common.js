@@ -517,14 +517,13 @@ var AjaxRequest = {
             timeout: timeout,
             context: $('body'),
             success: function (data) {
-                if(data.code === 0){
+                if(data.code === 10000){
                     if(typeof listener.success === "function"){
                         listener.success(data);
                     }
                 }else if(data.code === 10001 || data.code === 10002){
                     $(location).attr('href', 'index.html');
                 }else{
-                    Tools.group("Ajax Request Business Error.", data);
                     if(typeof listener.error === "function"){
                         listener.error(data.code, data.code_desc);
                     }else{
@@ -800,7 +799,7 @@ var CommonUse = {
             };
         }
 
-        NavTable.change_threme();
+        // NavTable.change_threme();
 
         // // 加载左侧用户信息
         // AjaxRequest.ajax_widget(
@@ -815,8 +814,11 @@ var CommonUse = {
         AjaxRequest.ajax_widget(
             "widget/user_top.html",
             function(html_text){
-                var html_str = template.render(html_text, data);
-                $(html_str).insertBefore($("#menus_setting"));
+                if($("#user_top").length === 0 ){
+                    var html_str = template.render(html_text, data);
+                    $(html_str).insertBefore($("#menus_setting"));
+                }
+
             }
         );
     },
