@@ -41,7 +41,7 @@
 
             <div class="bottom info"  style="clear:both;color:white;margin-left: 20px;margin-top: 60px">
 
-                公司:&nbsp;&nbsp;&nbsp; {{ if company }} {{ company }} {{ else }} XXXX 有限公司 {{ /if }}
+                公司:&nbsp;&nbsp;&nbsp; {{ if company_name }} {{ company_name }} {{ else }} XXXX 有限公司 {{ /if }}
 
             </div>
 
@@ -52,13 +52,17 @@
 
             <div class="main_person_profile" style="padding: 5px">
 
-                <a href="#" style="font-size:12px;color:#333333 ">个人信息</a>
+                <label class="neat-login-out" for="user_top_profile">
+                    <a id="user_top_profile" href="#" style="font-size:12px;color:#333333 ">个人信息</a>
+                </label>
 
             </div>
 
             <div class="main_login_out" style="padding: 5px">
 
-                <a href="#" style="font-size:12px;color:#333333">退出</a>
+                <label class="neat-login-out" for="neat_top_loginout">
+                    <a id="neat_top_loginout" href="#" style="font-size:12px;color:#333333">退出</a>
+                </label>
 
             </div>
 

@@ -596,9 +596,12 @@ var NavTable = {
         "use strict";
         
         for(var i=0;i<menus_data.length;i++){
-            var menu_data = menus_data[i];
-            NavTable.cache_menus.push(menu_data);
-            if (menu_data.childs.length > 0 ){ NavTable.set_cached_menus(menu_data.childs);}
+            NavTable.cache_menus.push(menus_data[i]);
+            if (menus_data[i].childs.length > 0 ){
+                for(var j=0;j<menus_data[i].childs.length;i++){
+                    NavTable.cache_menus.push(menus_data[i].childs[j]);
+                }
+            }
         }
     },
     
@@ -618,7 +621,7 @@ var NavTable = {
     change_threme:function(){
         "use strict";
 
-        $(".full-opacity-hover").on("click",function(e){
+        $(".full-opacity-hover").on("click",function(){
             var theme = $(this).attr("data-skin");
             $("body").removeClass().addClass(theme + " sidebar-mini");
         });
@@ -766,7 +769,7 @@ var NavTable = {
     /** 添加插件 **/
     loading_plugs:function(url_list, listen){
         "use strict";
-        
+
         Tools.info("Page Dependens Page:" + url_list.length);
 
         for(var i=0;i<url_list.length;i++){
@@ -791,15 +794,13 @@ var CommonUse = {
     init_user:function(data){
         "use strict";
 
-        if(!ValidData(data) || Settings.debug){
+        if(!ValidData(data) && Settings.debug){
             data = {
                 username: "Wormer",
-                realname: "wormer.cn",
-                company: "建设者家园网络科技有限公司"
+                name: "wormer.cn",
+                company_name: "建设者家园网络科技有限公司"
             };
         }
-
-        // NavTable.change_threme();
 
         // // 加载左侧用户信息
         // AjaxRequest.ajax_widget(
@@ -817,8 +818,22 @@ var CommonUse = {
                 if($("#user_top").length === 0 ){
                     var html_str = template.render(html_text, data);
                     $(html_str).insertBefore($("#menus_setting"));
-                }
 
+                    $(".neat-login-out").on('click', function(){
+                        PageRequest.login_out({
+                           success:function(data){
+                               if(data.code === 10000){
+                                   $(location).attr('href', 'neat_login.html');
+                               }else{
+                                   OpenModal.open_alert({
+                                       option: "error",
+                                       body:data.code_desc
+                                   });
+                               }
+                           }
+                        });
+                    });
+                }
             }
         );
     },
@@ -835,11 +850,11 @@ var CommonUse = {
         if(Settings.debug){
             var help = {
                 id: 100000,
-                perm_url: '/help?',
-                model_name: 'help',
+                code: "HELP",
+                modal: 'help',
                 name: "开发帮助",
-                perm_icon: "fa-question-circle",
-                childs: [],
+                icon: "fa-question-circle",
+                childs: []
             };
             data.menus.push(help);
         }
@@ -847,18 +862,24 @@ var CommonUse = {
         NavTable.set_cached_menus(data.menus);
 
         var temp_ready = function(html_text){
-            var html_str = template.render(html_text, data);
-            $(".sidebar-menu").append(html_str);
-            $('.click_menu').on('click', function(e){
-                if($(e.target).attr('data-click') == 'on'){
-                    NavTable.addTab(e.target);
-                }
-            });
-            $(".nav-click-lable").on('click',function(){
-                $(this).next().click();
-            });
 
-            NavTable.open_menu_by_name("开发帮助");
+            if($(".sidebar-menu").find('a').length===0){
+
+                var html_str = template.render(html_text, data);
+                $(".sidebar-menu").append(html_str);
+                $('.click_menu').on('click', function(e){
+                    if($(e.target).attr('data-click') == 'on'){
+                        NavTable.addTab(e.target);
+                    }
+                });
+                $(".nav-click-lable").on('click',function(){
+                    $(this).next().click();
+                });
+
+                NavTable.open_menu_by_name("开发帮助");
+
+                NavTable.set_cached_menus(data.menus);
+            }
             Tools.info("Init Menus Success.");
         };
 

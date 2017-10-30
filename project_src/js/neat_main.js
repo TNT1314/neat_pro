@@ -4,6 +4,9 @@ $(function() {
 
     try {
 
+        /** 初始化皮肤事件 **/
+        NavTable.change_threme();
+
         /** 初始化用户资料 **/
         program_init_user();
 
@@ -21,10 +24,13 @@ $(function() {
     function program_init_user(){
         var listener = {
             success:function(data){
+                Tools.error("program_init_user", data);
                 CommonUse.init_user(data.json);
             },
             complete:function(){
-                CommonUse.init_user();
+                if(Settings.debug){
+                    CommonUse.init_user();
+                }
             }
         };
         PageRequest.get_user_info(listener);
@@ -36,10 +42,8 @@ $(function() {
     function program_init_menu(){
         var listener = {
             success:function(data){
-                CommonUse.init_menu(data);
-            },
-            complete:function(){
-                CommonUse.init_menu();
+                Tools.error("program_init_menu", data);
+                CommonUse.init_menu(data.json);
             }
         };
         PageRequest.get_menus(listener);

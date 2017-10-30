@@ -18,8 +18,6 @@ $(function() {
 
     // user login function
     function user_login(){
-
-        Tools.error("user_login", $("#login_form").serialize());
         if(valid_form().form()){
             show_message("登录中，请稍等......");
             $.ajax({

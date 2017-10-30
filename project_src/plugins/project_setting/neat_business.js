@@ -9,7 +9,7 @@ var PageRequest = {
         var s_url = Settings.server + '/api/user/logout';
         var s_data = {};
         var s_listener = listener;
-        var s_timeout = 60000;
+        var s_timeout = 30000;
         var s_content = "正在登出，请稍候.....";
         AjaxRequest.ajax_jsonp(s_type, s_url, s_data, s_listener, s_timeout, s_content);
     },
@@ -17,11 +17,11 @@ var PageRequest = {
     get_user_info:function(listener){
         "use strict";
 
-        var s_type = 'GET';
+        var s_type = 'POST';
         var s_url = Settings.server + '/api/user/info/get';
         var s_data = {};
         var s_listener = listener;
-        var s_timeout = 3000;
+        var s_timeout = 30000;
         var s_content = "";
 
         AjaxRequest.ajax_jsonp(s_type, s_url, s_data, s_listener, s_timeout, s_content);
@@ -31,7 +31,7 @@ var PageRequest = {
         "use strict";
 
         var s_type = 'GET';
-        var s_url = Settings.server + '/fmap/api/account/permission/list/get';
+        var s_url = Settings.server + '/api/user/menus/get';
         var s_data = {};
         var s_listener = listener;
         var s_timeout = 60000;
